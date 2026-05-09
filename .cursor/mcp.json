@@ -1,0 +1,16 @@
+{
+  "mcpServers": {
+    "coplay-mcp": {
+      "autoApprove": [],
+      "disabled": false,
+      "timeout": 720,
+      "type": "stdio",
+      "command": "uvx",
+      "args": [
+        "--python",
+        ">=3.11",
+        "coplay-mcp-server@latest"
+      ]
+    }
+  }
+}
