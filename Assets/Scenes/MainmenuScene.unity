@@ -4734,6 +4734,14 @@ MonoBehaviour:
   boostDuration: 4
   boostMinIdleTime: 0
   boostMaxIdleTime: 0.5
+  kirlerParent: {fileID: 1665803066}
+  dirtSpawnInterval: 10
+  dirtMaxAlpha: 0.5
+  dirtFadeInDuration: 2
+  clearButton: {fileID: 1954317664}
+  spongeRect: {fileID: 1995020718}
+  spongeAutoHideTime: 5
+  cleanSpeed: 0.4
 --- !u!4 &2079988865
 Transform:
   m_ObjectHideFlags: 0
