@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MainmenuManager : MonoBehaviour
 {
@@ -17,17 +18,61 @@ public class MainmenuManager : MonoBehaviour
     [SerializeField] private float maxIdleTime = 3f;
     [SerializeField] private float arrivalThreshold = 5f;
 
+    [Header("Boost Settings")]
+    [SerializeField] private GameObject touchArea;
+    [SerializeField] private float boostMultiplier = 3f;
+    [SerializeField] private float boostDuration = 5f;
+    [SerializeField] private float boostMinIdleTime = 0f;
+    [SerializeField] private float boostMaxIdleTime = 2f;
+
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
     private List<RectTransform> swimPoints = new List<RectTransform>();
+    private float currentSpeedMultiplier = 1f;
+    private bool isBoosted;
+    private bool interruptMovement;
+    private Coroutine boostTimerCoroutine;
 
     private void Start()
     {
         CollectSwimPoints();
+        SetupTouchArea();
 
         if (swimPoints.Count == 0 || fishRect == null)
             return;
 
         StartCoroutine(FishBehaviour());
+    }
+
+    private void SetupTouchArea()
+    {
+        if (touchArea == null) return;
+
+        var trigger = touchArea.GetComponent<EventTrigger>();
+        if (trigger == null)
+            trigger = touchArea.AddComponent<EventTrigger>();
+
+        var entry = new EventTrigger.Entry { eventID = EventTriggerType.PointerClick };
+        entry.callback.AddListener(_ => OnTouchAreaClicked());
+        trigger.triggers.Add(entry);
+    }
+
+    private void OnTouchAreaClicked()
+    {
+        currentSpeedMultiplier = boostMultiplier;
+        isBoosted = true;
+        interruptMovement = true;
+
+        if (boostTimerCoroutine != null)
+            StopCoroutine(boostTimerCoroutine);
+        boostTimerCoroutine = StartCoroutine(BoostTimer());
+    }
+
+    private IEnumerator BoostTimer()
+    {
+        yield return new WaitForSeconds(boostDuration);
+        currentSpeedMultiplier = 1f;
+        isBoosted = false;
+        boostTimerCoroutine = null;
     }
 
     private void CollectSwimPoints()
@@ -42,13 +87,26 @@ public class MainmenuManager : MonoBehaviour
     {
         while (true)
         {
+            interruptMovement = false;
+
             RectTransform target = PickRandomPoint();
             yield return StartCoroutine(MoveToPoint(target));
 
+            if (interruptMovement) continue;
+
             SetSwimming(false);
 
-            float waitTime = Random.Range(minIdleTime, maxIdleTime);
-            yield return new WaitForSeconds(waitTime);
+            float waitMin = isBoosted ? boostMinIdleTime : minIdleTime;
+            float waitMax = isBoosted ? boostMaxIdleTime : maxIdleTime;
+            float waitTime = Random.Range(waitMin, waitMax);
+
+            float waited = 0f;
+            while (waited < waitTime)
+            {
+                if (interruptMovement) break;
+                waited += Time.deltaTime;
+                yield return null;
+            }
         }
     }
 
@@ -67,10 +125,12 @@ public class MainmenuManager : MonoBehaviour
 
         while (Vector2.Distance(fishRect.anchoredPosition, targetPos) > arrivalThreshold)
         {
+            if (interruptMovement) yield break;
+
             fishRect.anchoredPosition = Vector2.MoveTowards(
                 fishRect.anchoredPosition,
                 targetPos,
-                moveSpeed * Time.deltaTime
+                moveSpeed * currentSpeedMultiplier * Time.deltaTime
             );
             yield return null;
         }
