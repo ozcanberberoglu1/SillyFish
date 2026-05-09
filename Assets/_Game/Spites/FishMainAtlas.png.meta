@@ -3893,7 +3893,7 @@ TextureImporter:
         width: 426
         height: 308
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3915,7 +3915,7 @@ TextureImporter:
         width: 423
         height: 330
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3937,7 +3937,7 @@ TextureImporter:
         width: 469
         height: 292
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -3946,6 +3946,116 @@ TextureImporter:
       bones: []
       spriteID: b1b1b23e6ada4477cba9f9682c42a6c4
       internalID: 484265991
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_9
+      rect:
+        serializedVersion: 2
+        x: 1813
+        y: 1795
+        width: 228
+        height: 241
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 814a19a7396714a9097f129e3bffd6ab
+      internalID: -2019567488
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_10
+      rect:
+        serializedVersion: 2
+        x: 1514
+        y: 1775
+        width: 297
+        height: 265
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5c9dd85b272674b678bc30a2780dde6c
+      internalID: 598890391
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_11
+      rect:
+        serializedVersion: 2
+        x: 1288
+        y: 1795
+        width: 223
+        height: 240
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: b8929cacbf8294e0c897f2a7e627f482
+      internalID: 1029182758
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_12
+      rect:
+        serializedVersion: 2
+        x: 1059
+        y: 1821
+        width: 224
+        height: 215
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d1b7a5d6521ab4eb88f13f5ca6bf8cc5
+      internalID: 954572094
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_13
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1663
+        width: 552
+        height: 385
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 4f113a2fc7b034b9199aa65fb49e887e
+      internalID: -2008975522
       vertices: []
       indices: 
       edges: []
@@ -3966,6 +4076,10 @@ TextureImporter:
     nameFileIdTable:
       FishMainAtlas_0: -2771240283818811076
       FishMainAtlas_1: -6095114094942119106
+      FishMainAtlas_10: 598890391
+      FishMainAtlas_11: 1029182758
+      FishMainAtlas_12: 954572094
+      FishMainAtlas_13: -2008975522
       FishMainAtlas_2: -5008819527607996587
       FishMainAtlas_3: -807551738473465809
       FishMainAtlas_4: -2643217370905581124
@@ -3973,6 +4087,7 @@ TextureImporter:
       FishMainAtlas_6: -794198111
       FishMainAtlas_7: 253088475
       FishMainAtlas_8: 484265991
+      FishMainAtlas_9: -2019567488
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
