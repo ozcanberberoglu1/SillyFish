@@ -5628,7 +5628,7 @@ MonoBehaviour:
   foodFallSpeed: 200
   fishChaseSpeed: 400
   hungerIncreasePerFood: 0.1
-  eatAnimDuration: 1
+  eatAnimDuration: 0
   foodFadeOutDuration: 2
 --- !u!4 &2079988865
 Transform:
