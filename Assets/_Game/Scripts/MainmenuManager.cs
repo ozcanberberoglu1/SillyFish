@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -32,6 +33,9 @@ public class MainmenuManager : MonoBehaviour
     [SerializeField] private float dirtSpawnInterval = 60f;
     [SerializeField] private float dirtMaxAlpha = 0.5f;
     [SerializeField] private float dirtFadeInDuration = 2f;
+
+    [Header("Play Button")]
+    [SerializeField] private Button playButton;
 
     [Header("Sponge Settings")]
     [SerializeField] private Button clearButton;
@@ -102,6 +106,7 @@ public class MainmenuManager : MonoBehaviour
         SetupSponge();
         SetupHungerHealth();
         SetupFoodSystem();
+        SetupPlayButton();
 
         if (swimPoints.Count == 0 || fishRect == null)
             return;
@@ -761,6 +766,22 @@ public class MainmenuManager : MonoBehaviour
             SetAnimState("Locomotion", 1f);
         else
             SetAnimState("Locomotion", 0f);
+    }
+
+    #endregion
+
+    #region Play Button
+
+    private void SetupPlayButton()
+    {
+        if (playButton != null)
+            playButton.onClick.AddListener(OnPlayButtonClicked);
+    }
+
+    private void OnPlayButtonClicked()
+    {
+        if (isDead) return;
+        SceneManager.LoadScene("GameScene");
     }
 
     #endregion
