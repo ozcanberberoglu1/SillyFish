@@ -4047,7 +4047,7 @@ TextureImporter:
         width: 552
         height: 385
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -4056,6 +4056,28 @@ TextureImporter:
       bones: []
       spriteID: 4f113a2fc7b034b9199aa65fb49e887e
       internalID: -2008975522
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_14
+      rect:
+        serializedVersion: 2
+        x: 625
+        y: 0
+        width: 144
+        height: 144
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8d76af1b570b04c3f9fa4358bf5ce6a1
+      internalID: -1623333307
       vertices: []
       indices: 
       edges: []
@@ -4080,6 +4102,7 @@ TextureImporter:
       FishMainAtlas_11: 1029182758
       FishMainAtlas_12: 954572094
       FishMainAtlas_13: -2008975522
+      FishMainAtlas_14: -1623333307
       FishMainAtlas_2: -5008819527607996587
       FishMainAtlas_3: -807551738473465809
       FishMainAtlas_4: -2643217370905581124
