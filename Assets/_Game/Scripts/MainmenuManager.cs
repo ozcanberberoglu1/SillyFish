@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using TMPro;
 
 public class MainmenuManager : MonoBehaviour
 {
@@ -38,13 +39,43 @@ public class MainmenuManager : MonoBehaviour
     [SerializeField] private float spongeAutoHideTime = 5f;
     [SerializeField] private float cleanSpeed = 0.5f;
 
+    [Header("Hunger & Health")]
+    [SerializeField] private Image hungerFillImage;
+    [SerializeField] private Image healthFillImage;
+    [SerializeField] private RectTransform deadPointRect;
+    [SerializeField] private float hungerDecreaseInterval = 60f;
+    [SerializeField] private float hungerDecreaseAmount = 0.1f;
+    [SerializeField] private float healthDecreaseInterval = 5f;
+    [SerializeField] private float healthDecreaseAmount = 0.1f;
+    [SerializeField] private float healthIncreaseInterval = 10f;
+    [SerializeField] private float healthIncreaseAmount = 0.1f;
+    [SerializeField] private float healthRecoveryHungerThreshold = 0.5f;
+    [SerializeField] private float deathFallSpeed = 80f;
+
+    [Header("Food")]
+    [SerializeField] private Button foodButton;
+    [SerializeField] private TextMeshProUGUI foodCountText;
+    [SerializeField] private GameObject foodPrefab;
+    [SerializeField] private RectTransform foodSpawnArea;
+    [SerializeField] private RectTransform foodActiveAreaRect;
+    [SerializeField] private RectTransform foodFinishAreaRect;
+    [SerializeField] private int startingFoodCount = 10;
+    [SerializeField] private float foodFallSpeed = 50f;
+    [SerializeField] private float fishChaseSpeed = 400f;
+    [SerializeField] private float hungerIncreasePerFood = 0.1f;
+    [SerializeField] private float eatAnimDuration = 1f;
+    [SerializeField] private float foodFadeOutDuration = 2f;
+
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
+
+    // Fish movement
     private List<RectTransform> swimPoints = new List<RectTransform>();
     private float currentSpeedMultiplier = 1f;
     private bool isBoosted;
     private bool interruptMovement;
     private Coroutine boostTimerCoroutine;
 
+    // Dirt & Sponge
     private List<GameObject> dirtObjects = new List<GameObject>();
     private Vector2 spongeStartPos;
     private bool isDraggingSponge;
@@ -52,12 +83,25 @@ public class MainmenuManager : MonoBehaviour
     private Canvas parentCanvas;
     private Camera canvasCamera;
 
+    // Hunger & Health
+    private float hungerValue = 1f;
+    private float healthValue = 1f;
+    private float lastEatTime;
+    private bool isDead;
+
+    // Food
+    private int foodCount;
+    private List<RectTransform> availableFoods = new List<RectTransform>();
+    private RectTransform currentChaseTarget;
+
     private void Start()
     {
         CollectSwimPoints();
         SetupTouchArea();
         SetupDirtSystem();
         SetupSponge();
+        SetupHungerHealth();
+        SetupFoodSystem();
 
         if (swimPoints.Count == 0 || fishRect == null)
             return;
@@ -82,6 +126,8 @@ public class MainmenuManager : MonoBehaviour
 
     private void OnTouchAreaClicked()
     {
+        if (isDead) return;
+
         currentSpeedMultiplier = boostMultiplier;
         isBoosted = true;
         interruptMovement = true;
@@ -111,6 +157,15 @@ public class MainmenuManager : MonoBehaviour
     {
         while (true)
         {
+            if (isDead) yield break;
+
+            RectTransform food = GetNearestAvailableFood();
+            if (food != null && !IsHungerFull())
+            {
+                yield return StartCoroutine(ChaseFoodRoutine(food));
+                continue;
+            }
+
             interruptMovement = false;
 
             RectTransform target = PickRandomPoint();
@@ -118,7 +173,7 @@ public class MainmenuManager : MonoBehaviour
 
             if (interruptMovement) continue;
 
-            SetSwimming(false);
+            SetAnimState("Locomotion", 0f);
 
             float waitMin = isBoosted ? boostMinIdleTime : minIdleTime;
             float waitMax = isBoosted ? boostMaxIdleTime : maxIdleTime;
@@ -127,7 +182,9 @@ public class MainmenuManager : MonoBehaviour
             float waited = 0f;
             while (waited < waitTime)
             {
+                if (isDead) yield break;
                 if (interruptMovement) break;
+                if (GetNearestAvailableFood() != null && !IsHungerFull()) break;
                 waited += Time.deltaTime;
                 yield return null;
             }
@@ -142,14 +199,14 @@ public class MainmenuManager : MonoBehaviour
 
     private IEnumerator MoveToPoint(RectTransform target)
     {
-        SetSwimming(true);
+        SetAnimState("Locomotion", 1f);
         Vector2 targetPos = target.anchoredPosition;
 
         FlipFish(targetPos);
 
         while (Vector2.Distance(fishRect.anchoredPosition, targetPos) > arrivalThreshold)
         {
-            if (interruptMovement) yield break;
+            if (interruptMovement || isDead) yield break;
 
             fishRect.anchoredPosition = Vector2.MoveTowards(
                 fishRect.anchoredPosition,
@@ -162,9 +219,9 @@ public class MainmenuManager : MonoBehaviour
         fishRect.anchoredPosition = targetPos;
     }
 
-    private void FlipFish(Vector2 targetPos)
+    private void FlipFish(Vector2 targetWorldOrLocal)
     {
-        float direction = targetPos.x - fishRect.anchoredPosition.x;
+        float direction = targetWorldOrLocal.x - fishRect.anchoredPosition.x;
         if (Mathf.Abs(direction) < 0.1f) return;
 
         Vector3 scale = fishRect.localScale;
@@ -172,10 +229,25 @@ public class MainmenuManager : MonoBehaviour
         fishRect.localScale = scale;
     }
 
-    private void SetSwimming(bool isSwimming)
+    private bool IsHungerFull()
     {
-        if (fishAnimator != null)
-            fishAnimator.SetFloat(SpeedHash, isSwimming ? 1f : 0f);
+        return hungerValue >= 0.99f;
+    }
+
+    private void SetAnimState(string stateName, float speed = -1f)
+    {
+        if (fishAnimator == null) return;
+
+        if (stateName == "Locomotion")
+        {
+            if (speed >= 0f)
+                fishAnimator.SetFloat(SpeedHash, speed);
+            fishAnimator.CrossFade("Locomotion", 0.15f);
+        }
+        else
+        {
+            fishAnimator.CrossFade(stateName, 0.1f, 0, 0f);
+        }
     }
 
     #endregion
@@ -206,8 +278,7 @@ public class MainmenuManager : MonoBehaviour
             if (inactiveDirts.Count > 0)
             {
                 int index = Random.Range(0, inactiveDirts.Count);
-                var dirt = inactiveDirts[index];
-                StartCoroutine(FadeInDirt(dirt));
+                StartCoroutine(FadeInDirt(inactiveDirts[index]));
             }
         }
     }
@@ -363,6 +434,333 @@ public class MainmenuManager : MonoBehaviour
             }
             yield return null;
         }
+    }
+
+    #endregion
+
+    #region Hunger & Health System
+
+    private void SetupHungerHealth()
+    {
+        hungerValue = 1f;
+        healthValue = 1f;
+        lastEatTime = Time.time;
+        UpdateSliders();
+
+        StartCoroutine(HungerRoutine());
+        StartCoroutine(HealthRoutine());
+    }
+
+    private void UpdateSliders()
+    {
+        if (hungerFillImage != null)
+            hungerFillImage.fillAmount = hungerValue;
+        if (healthFillImage != null)
+            healthFillImage.fillAmount = healthValue;
+    }
+
+    private IEnumerator HungerRoutine()
+    {
+        while (!isDead)
+        {
+            yield return new WaitForSeconds(hungerDecreaseInterval);
+
+            if (isDead) yield break;
+
+            if (Time.time - lastEatTime >= hungerDecreaseInterval)
+            {
+                hungerValue = Mathf.Max(0f, hungerValue - hungerDecreaseAmount);
+                UpdateSliders();
+            }
+        }
+    }
+
+    private IEnumerator HealthRoutine()
+    {
+        while (!isDead)
+        {
+            yield return new WaitForSeconds(1f);
+
+            if (isDead) yield break;
+
+            if (hungerValue <= 0f)
+            {
+                yield return HealthDamagePhase();
+            }
+            else if (hungerValue >= healthRecoveryHungerThreshold && healthValue < 1f)
+            {
+                yield return HealthRecoveryPhase();
+            }
+        }
+    }
+
+    private IEnumerator HealthDamagePhase()
+    {
+        while (hungerValue <= 0f && !isDead)
+        {
+            healthValue = Mathf.Max(0f, healthValue - healthDecreaseAmount);
+            UpdateSliders();
+
+            if (healthValue <= 0f)
+            {
+                StartCoroutine(Die());
+                yield break;
+            }
+
+            yield return new WaitForSeconds(healthDecreaseInterval);
+        }
+    }
+
+    private IEnumerator HealthRecoveryPhase()
+    {
+        while (hungerValue >= healthRecoveryHungerThreshold && healthValue < 1f && !isDead)
+        {
+            healthValue = Mathf.Min(1f, healthValue + healthIncreaseAmount);
+            UpdateSliders();
+            yield return new WaitForSeconds(healthIncreaseInterval);
+        }
+    }
+
+    private IEnumerator Die()
+    {
+        isDead = true;
+        interruptMovement = true;
+
+        SetAnimState("FishDeadAnim");
+
+        if (deadPointRect != null && fishRect != null)
+        {
+            Vector3 deadWorld = deadPointRect.position;
+            RectTransform fishParent = fishRect.parent as RectTransform;
+            Vector3 localDead = fishParent.InverseTransformPoint(deadWorld);
+            Vector2 targetPos = new Vector2(localDead.x, localDead.y);
+
+            while (Vector2.Distance(fishRect.anchoredPosition, targetPos) > 2f)
+            {
+                fishRect.anchoredPosition = Vector2.MoveTowards(
+                    fishRect.anchoredPosition,
+                    targetPos,
+                    deathFallSpeed * Time.deltaTime
+                );
+                yield return null;
+            }
+
+            fishRect.anchoredPosition = targetPos;
+        }
+    }
+
+    #endregion
+
+    #region Food System
+
+    private void SetupFoodSystem()
+    {
+        foodCount = startingFoodCount;
+        UpdateFoodCountText();
+
+        if (foodButton != null)
+            foodButton.onClick.AddListener(OnFoodButtonClicked);
+    }
+
+    private void UpdateFoodCountText()
+    {
+        if (foodCountText != null)
+            foodCountText.text = $"x{foodCount}";
+    }
+
+    private void OnFoodButtonClicked()
+    {
+        if (isDead) return;
+        if (foodCount <= 0) return;
+        if (foodPrefab == null || foodSpawnArea == null) return;
+
+        foodCount--;
+        UpdateFoodCountText();
+
+        SpawnFood();
+    }
+
+    private void SpawnFood()
+    {
+        RectTransform spawnParent = fishRect.parent as RectTransform;
+        GameObject food = Instantiate(foodPrefab, spawnParent);
+        RectTransform foodRect = food.GetComponent<RectTransform>();
+
+        Vector3 spawnWorld = foodSpawnArea.position;
+        Vector3 localSpawn = spawnParent.InverseTransformPoint(spawnWorld);
+
+        float halfWidth = foodSpawnArea.rect.width * 0.4f;
+        float randomX = localSpawn.x + Random.Range(-halfWidth, halfWidth);
+
+        foodRect.anchoredPosition = new Vector2(randomX, localSpawn.y);
+        foodRect.localScale = Vector3.one;
+
+        StartCoroutine(FoodLifecycle(foodRect));
+    }
+
+    private IEnumerator FoodLifecycle(RectTransform food)
+    {
+        if (food == null) yield break;
+
+        RectTransform fishParent = fishRect.parent as RectTransform;
+        bool markedAvailable = false;
+        bool stopped = false;
+
+        while (food != null && food.gameObject != null)
+        {
+            float activeY = GetLocalY(foodActiveAreaRect, fishParent);
+            float finishY = GetLocalY(foodFinishAreaRect, fishParent);
+
+            if (!markedAvailable && food.anchoredPosition.y <= activeY)
+            {
+                markedAvailable = true;
+                availableFoods.Add(food);
+                if (!IsHungerFull())
+                    interruptMovement = true;
+            }
+
+            if (!stopped)
+            {
+                if (food.anchoredPosition.y <= finishY)
+                {
+                    stopped = true;
+                    food.anchoredPosition = new Vector2(food.anchoredPosition.x, finishY);
+                }
+                else
+                {
+                    food.anchoredPosition += Vector2.down * foodFallSpeed * Time.deltaTime;
+                }
+            }
+
+            if (stopped)
+            {
+                availableFoods.Remove(food);
+
+                yield return new WaitForSeconds(10f);
+
+                if (food != null)
+                    yield return FadeOutAndDestroy(food);
+
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    private float GetLocalY(RectTransform worldRef, RectTransform localParent)
+    {
+        if (worldRef == null || localParent == null) return 0f;
+        Vector3 local = localParent.InverseTransformPoint(worldRef.position);
+        return local.y;
+    }
+
+    private IEnumerator FadeOutAndDestroy(RectTransform food)
+    {
+        Image img = food.GetComponent<Image>();
+        if (img == null)
+        {
+            Destroy(food.gameObject);
+            yield break;
+        }
+
+        float elapsed = 0f;
+        Color c = img.color;
+        float startAlpha = c.a;
+
+        while (elapsed < foodFadeOutDuration)
+        {
+            elapsed += Time.deltaTime;
+            c.a = Mathf.Lerp(startAlpha, 0f, elapsed / foodFadeOutDuration);
+            img.color = c;
+            yield return null;
+        }
+
+        Destroy(food.gameObject);
+    }
+
+    private RectTransform GetNearestAvailableFood()
+    {
+        availableFoods.RemoveAll(f => f == null || !f.gameObject.activeSelf);
+
+        if (availableFoods.Count == 0) return null;
+
+        RectTransform nearest = null;
+        float minDist = float.MaxValue;
+
+        foreach (var food in availableFoods)
+        {
+            float dist = Vector2.Distance(fishRect.position, food.position);
+            if (dist < minDist)
+            {
+                minDist = dist;
+                nearest = food;
+            }
+        }
+
+        return nearest;
+    }
+
+    private IEnumerator ChaseFoodRoutine(RectTransform food)
+    {
+        if (food == null || IsHungerFull()) yield break;
+
+        currentChaseTarget = food;
+        SetAnimState("Locomotion", 1f);
+
+        while (food != null && food.gameObject.activeSelf)
+        {
+            if (isDead || IsHungerFull()) yield break;
+
+            Vector3 localFood = ((RectTransform)fishRect.parent).InverseTransformPoint(food.position);
+            Vector2 targetPos = new Vector2(localFood.x, localFood.y);
+
+            FlipFish(targetPos);
+
+            fishRect.anchoredPosition = Vector2.MoveTowards(
+                fishRect.anchoredPosition,
+                targetPos,
+                fishChaseSpeed * Time.deltaTime
+            );
+
+            if (Vector2.Distance(fishRect.anchoredPosition, targetPos) < arrivalThreshold)
+            {
+                yield return StartCoroutine(EatFood(food));
+                yield break;
+            }
+
+            yield return null;
+        }
+
+        currentChaseTarget = null;
+    }
+
+    private IEnumerator EatFood(RectTransform food)
+    {
+        if (food == null || IsHungerFull())
+        {
+            currentChaseTarget = null;
+            yield break;
+        }
+
+        availableFoods.Remove(food);
+        Destroy(food.gameObject);
+
+        currentChaseTarget = null;
+
+        SetAnimState("FishFoodAnim");
+        yield return new WaitForSeconds(eatAnimDuration);
+
+        hungerValue = Mathf.Min(1f, hungerValue + hungerIncreasePerFood);
+        lastEatTime = Time.time;
+        UpdateSliders();
+
+        bool hasMoreFood = GetNearestAvailableFood() != null && !IsHungerFull();
+
+        if (hasMoreFood)
+            SetAnimState("Locomotion", 1f);
+        else
+            SetAnimState("Locomotion", 0f);
     }
 
     #endregion
