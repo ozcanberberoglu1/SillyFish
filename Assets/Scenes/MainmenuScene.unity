@@ -4564,7 +4564,7 @@ MonoBehaviour:
   boostMinIdleTime: 0
   boostMaxIdleTime: 0.5
   kirlerParent: {fileID: 1665803066}
-  dirtSpawnInterval: 60
+  dirtSpawnInterval: 50
   dirtMaxAlpha: 0.5
   dirtFadeInDuration: 2
   playButton: {fileID: 375608041}
