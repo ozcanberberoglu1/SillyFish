@@ -5,6 +5,7 @@ public class EnemyFishAI : MonoBehaviour
 {
     [Header("Stats")]
     public int level = 1;
+    public int xp = 1;
     public float moveSpeed = 150f;
     public float detectionRadius = 400f;
     public float chaseTime = 2.5f;

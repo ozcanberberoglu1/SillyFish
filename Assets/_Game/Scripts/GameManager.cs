@@ -53,6 +53,7 @@ public class GameManager : MonoBehaviour
     {
         public GameObject prefab;
         public int level = 1;
+        public int xp = 1;
         public int count = 5;
         public float speed = 150f;
         public float detectionRadius = 400f;
@@ -422,6 +423,7 @@ public class GameManager : MonoBehaviour
 
                 var ai = go.AddComponent<EnemyFishAI>();
                 ai.level = cfg.level;
+                ai.xp = cfg.xp;
                 ai.moveSpeed = cfg.speed;
                 ai.detectionRadius = cfg.detectionRadius;
                 ai.chaseTime = cfg.chaseTime;
@@ -485,7 +487,7 @@ public class GameManager : MonoBehaviour
     {
         isEating = true;
 
-        currentXP += enemy.level;
+        currentXP += enemy.xp;
         UpdatePlayerLevelText();
 
         enemy.gameObject.SetActive(false);
@@ -501,7 +503,7 @@ public class GameManager : MonoBehaviour
         if (fishAnimator != null)
             fishAnimator.CrossFade("Locomotion", 0.15f);
 
-        int requiredXP = baseXPMultiplier * playerLevel * (playerLevel + 1);
+        int requiredXP = baseXPMultiplier * playerLevel;
         if (currentXP >= requiredXP)
         {
             currentXP -= requiredXP;

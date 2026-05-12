@@ -815,37 +815,43 @@ MonoBehaviour:
   baseScale: 0.8
   scalePerLevel: 0.2
   baseXPMultiplier: 5
-  enemyEatDistance: 150
+  playerEatDistance: 50
+  enemyKillDistance: 15
   respawnTimeMin: 5
   respawnTimeMax: 7
   cameraSizePerLevel: 0.3
   enemySpawnConfigs:
   - prefab: {fileID: 6836182319577743249, guid: 494e8c8202a334920acc67071b4e8619, type: 3}
     level: 1
+    xp: 1
     count: 8
     speed: 90
     detectionRadius: 300
     chaseTime: 2.5
   - prefab: {fileID: 6836182319577743249, guid: 3487c8e15b1104fde96983550e297683, type: 3}
     level: 2
+    xp: 2
     count: 6
     speed: 90
     detectionRadius: 400
     chaseTime: 2.5
   - prefab: {fileID: 6836182319577743249, guid: e48109ca3c3da4856a141e6acf0b9545, type: 3}
     level: 3
+    xp: 3
     count: 4
     speed: 60
     detectionRadius: 500
     chaseTime: 2.5
   - prefab: {fileID: 6836182319577743249, guid: bbb0ccadd036043e285805e64481e0cf, type: 3}
     level: 4
+    xp: 4
     count: 3
     speed: 100
     detectionRadius: 600
     chaseTime: 2.5
   - prefab: {fileID: 6836182319577743249, guid: f74d75d4de76a4886a0832dcef37c9cb, type: 3}
     level: 5
+    xp: 1
     count: 2
     speed: 120
     detectionRadius: 700
