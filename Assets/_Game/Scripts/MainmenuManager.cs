@@ -37,6 +37,10 @@ public class MainmenuManager : MonoBehaviour
     [Header("Play Button")]
     [SerializeField] private Button playButton;
 
+    [Header("Cave")]
+    [SerializeField] private RectTransform cavePoint;
+    [SerializeField] private float caveSwimSpeed = 300f;
+
     [Header("Sponge Settings")]
     [SerializeField] private Button clearButton;
     [SerializeField] private RectTransform spongeRect;
@@ -98,6 +102,13 @@ public class MainmenuManager : MonoBehaviour
     private List<RectTransform> availableFoods = new List<RectTransform>();
     private RectTransform currentChaseTarget;
 
+    // Cave
+    private bool isGoingToCave;
+
+    // Level text
+    private Transform menuLvTextCanvas;
+    private float origMenuLvTextLocalX;
+
     private void Start()
     {
         CollectSwimPoints();
@@ -107,6 +118,7 @@ public class MainmenuManager : MonoBehaviour
         SetupHungerHealth();
         SetupFoodSystem();
         SetupPlayButton();
+        LoadAndDisplayLevel();
 
         if (swimPoints.Count == 0 || fishRect == null)
             return;
@@ -232,6 +244,24 @@ public class MainmenuManager : MonoBehaviour
         Vector3 scale = fishRect.localScale;
         scale.x = direction > 0 ? -1f : 1f;
         fishRect.localScale = scale;
+
+        KeepLvTextUpright();
+    }
+
+    private void KeepLvTextUpright()
+    {
+        if (menuLvTextCanvas == null) return;
+
+        float flipX = fishRect.localScale.x;
+
+        Vector3 s = menuLvTextCanvas.localScale;
+        float absX = Mathf.Abs(s.x);
+        s.x = flipX >= 0 ? absX : -absX;
+        menuLvTextCanvas.localScale = s;
+
+        Vector3 p = menuLvTextCanvas.localPosition;
+        p.x = flipX >= 0 ? origMenuLvTextLocalX : -origMenuLvTextLocalX;
+        menuLvTextCanvas.localPosition = p;
     }
 
     private bool IsHungerFull()
@@ -780,8 +810,68 @@ public class MainmenuManager : MonoBehaviour
 
     private void OnPlayButtonClicked()
     {
-        if (isDead) return;
-        SceneManager.LoadScene("GameScene");
+        if (isDead || isGoingToCave) return;
+        isGoingToCave = true;
+        interruptMovement = true;
+        StopAllCoroutines();
+        StartCoroutine(SwimToCaveAndStart());
+    }
+
+    private IEnumerator SwimToCaveAndStart()
+    {
+        if (cavePoint == null || fishRect == null)
+        {
+            SceneManager.LoadScene("GameScene");
+            yield break;
+        }
+
+        if (playButton != null) playButton.interactable = false;
+
+        SetAnimState("Locomotion", 1f);
+        RectTransform fishParent = fishRect.parent as RectTransform;
+
+        while (true)
+        {
+            Vector3 localCave = fishParent.InverseTransformPoint(cavePoint.position);
+            Vector2 targetPos = new Vector2(localCave.x, localCave.y);
+
+            FlipFish(targetPos);
+
+            fishRect.anchoredPosition = Vector2.MoveTowards(
+                fishRect.anchoredPosition,
+                targetPos,
+                caveSwimSpeed * Time.deltaTime
+            );
+
+            if (Vector2.Distance(fishRect.anchoredPosition, targetPos) < arrivalThreshold)
+            {
+                SceneManager.LoadScene("GameScene");
+                yield break;
+            }
+
+            yield return null;
+        }
+    }
+
+    #endregion
+
+    #region Level Display
+
+    private void LoadAndDisplayLevel()
+    {
+        int level = PlayerPrefs.GetInt("PlayerLevel", 1);
+
+        if (fishAnimator == null) return;
+        menuLvTextCanvas = fishAnimator.transform.Find("LvTextCanvas");
+        if (menuLvTextCanvas == null) return;
+
+        origMenuLvTextLocalX = menuLvTextCanvas.localPosition.x;
+
+        var lvTextObj = menuLvTextCanvas.Find("LvText");
+        if (lvTextObj == null) return;
+
+        var tmp = lvTextObj.GetComponent<TextMeshProUGUI>();
+        if (tmp != null) tmp.text = $"Lv{level}";
     }
 
     #endregion

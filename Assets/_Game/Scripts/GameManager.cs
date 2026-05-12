@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
 
@@ -47,6 +48,11 @@ public class GameManager : MonoBehaviour
 
     [Header("Enemy Fish")]
     [SerializeField] private List<EnemySpawnConfig> enemySpawnConfigs = new List<EnemySpawnConfig>();
+
+    [Header("Portal")]
+    [SerializeField] private RectTransform portalSpawnPoint;
+    [SerializeField] private RectTransform portalNextPoint;
+    [SerializeField] private float portalEnterDistance = 100f;
 
     [System.Serializable]
     public class EnemySpawnConfig
@@ -110,6 +116,8 @@ public class GameManager : MonoBehaviour
                 canvasCamera = canvas.worldCamera;
         }
 
+        playerLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
+
         if (fishWorldTransform != null)
         {
             origWorldFishScale = fishWorldTransform.localScale;
@@ -123,6 +131,7 @@ public class GameManager : MonoBehaviour
         SpawnEnemies();
         UpdatePlayerScale();
         UpdatePlayerLevelText();
+        MoveToSpawnPoint();
     }
 
     private void FindPlayerLvText()
@@ -264,6 +273,7 @@ public class GameManager : MonoBehaviour
         CheckFoodEat();
         SyncEnemyWorldPositions();
         CheckEnemyInteractions();
+        CheckPortal();
     }
 
     private void UpdateWorldPosition()
@@ -510,6 +520,7 @@ public class GameManager : MonoBehaviour
             playerLevel++;
             UpdatePlayerScale();
             UpdatePlayerLevelText();
+            SavePlayerLevel();
         }
     }
 
@@ -571,8 +582,40 @@ public class GameManager : MonoBehaviour
     {
         isEating = true;
         yield return new WaitForSeconds(1.5f);
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    #endregion
+
+    #region Portal & Save
+
+    private void MoveToSpawnPoint()
+    {
+        if (portalNextPoint == null || bgRect == null) return;
+
+        Vector3 localInBG = bgRect.InverseTransformPoint(portalNextPoint.position);
+        worldPosition = new Vector2(localInBG.x, localInBG.y);
+        ClampWorldPosition();
+        bgRect.anchoredPosition = bgStartPos - worldPosition;
+    }
+
+    private void CheckPortal()
+    {
+        if (portalSpawnPoint == null || isEating) return;
+        float dist = Vector2.Distance(fishRect.position, portalSpawnPoint.position);
+        if (dist < portalEnterDistance)
+        {
+            SavePlayerLevel();
+            SceneManager.LoadScene("MainmenuScene");
+        }
+    }
+
+    private void SavePlayerLevel()
+    {
+        PlayerPrefs.SetInt("PlayerLevel", playerLevel);
+        float s = baseScale + (playerLevel - 1) * scalePerLevel;
+        PlayerPrefs.SetFloat("PlayerScale", s);
+        PlayerPrefs.Save();
     }
 
     #endregion

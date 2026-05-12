@@ -4568,6 +4568,8 @@ MonoBehaviour:
   dirtMaxAlpha: 0.5
   dirtFadeInDuration: 2
   playButton: {fileID: 375608041}
+  cavePoint: {fileID: 1799566574}
+  caveSwimSpeed: 300
   clearButton: {fileID: 1954317664}
   spongeRect: {fileID: 1995020718}
   spongeAutoHideTime: 5
