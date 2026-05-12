@@ -5261,6 +5261,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 6
       objectReference: {fileID: 0}
+    - target: {fileID: 7094438935968941864, guid: 0328a312da17b4569a2e5bf06ae3347f, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7416016564533149812, guid: 0328a312da17b4569a2e5bf06ae3347f, type: 3}
       propertyPath: m_Layer
       value: 6
