@@ -8529,6 +8529,28 @@ TextureImporter:
         'boneIndex[1]': 0
         'boneIndex[2]': 0
         'boneIndex[3]': 0
+    - serializedVersion: 2
+      name: FishMainAtlas_18
+      rect:
+        serializedVersion: 2
+        x: 822
+        y: 1
+        width: 124
+        height: 113
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 747d5371f17eb40968f5a582959500c8
+      internalID: 2005021267
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -8553,6 +8575,7 @@ TextureImporter:
       FishMainAtlas_15: 146580742
       FishMainAtlas_16: -1435261939
       FishMainAtlas_17: -2128055282
+      FishMainAtlas_18: 2005021267
       FishMainAtlas_2: -5008819527607996587
       FishMainAtlas_3: -807551738473465809
       FishMainAtlas_4: -2643217370905581124
