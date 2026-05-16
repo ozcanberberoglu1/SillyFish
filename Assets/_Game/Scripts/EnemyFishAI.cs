@@ -213,4 +213,12 @@ public class EnemyFishAI : MonoBehaviour
         isEatingPlayer = true;
         if (anim != null) anim.Play("Food", 0, 0f);
     }
+
+    public void ResumeAfterBite()
+    {
+        isEatingPlayer = false;
+        PickWanderTarget();
+        currentState = FishState.Wandering;
+        PlayIdle();
+    }
 }

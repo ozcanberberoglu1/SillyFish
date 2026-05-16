@@ -54,6 +54,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RectTransform portalNextPoint;
     [SerializeField] private float portalEnterDistance = 100f;
 
+    [Header("Health")]
+    [SerializeField] private int maxHP = 3;
+    [SerializeField] private float healthSliderShowTime = 2f;
+    [SerializeField] private float shakeAmount = 10f;
+    [SerializeField] private float shakeDuration = 0.2f;
+
+    [Header("Death Screen")]
+    [SerializeField] private GameObject firstDeathScreen;
+
     [System.Serializable]
     public class EnemySpawnConfig
     {
@@ -95,6 +104,22 @@ public class GameManager : MonoBehaviour
     private Transform playerLvTextCanvas;
     private float origPlayerLvTextLocalX;
 
+    // Health
+    private int currentHP;
+    private bool isInvincible;
+    private bool isDead;
+    private bool usedSecondChance;
+    private int entryLevel;
+    private Image healthFillImage;
+    private GameObject healthSliderObj;
+    private Coroutine healthSliderHideCoroutine;
+
+    // Flash shader
+    private List<Renderer> fishRenderers = new List<Renderer>();
+    private List<Material> originalMaterials = new List<Material>();
+    private List<Material> flashMaterials = new List<Material>();
+    private static readonly int FlashAmountID = Shader.PropertyToID("_FlashAmount");
+
     public Vector2 GetPlayerWorldPosition() => worldPosition;
     public int GetPlayerLevel() => playerLevel;
 
@@ -117,12 +142,19 @@ public class GameManager : MonoBehaviour
         }
 
         playerLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
+        entryLevel = PlayerPrefs.GetInt("EntryLevel", playerLevel);
 
         if (fishWorldTransform != null)
         {
             origWorldFishScale = fishWorldTransform.localScale;
             FindPlayerLvText();
+            FindHealthSlider();
+            CacheRenderers();
         }
+
+        currentHP = maxHP;
+        if (healthSliderObj != null) healthSliderObj.SetActive(false);
+        if (firstDeathScreen != null) firstDeathScreen.SetActive(false);
 
         SetupJoystick();
         SpawnFoods();
@@ -132,6 +164,10 @@ public class GameManager : MonoBehaviour
         UpdatePlayerScale();
         UpdatePlayerLevelText();
         MoveToSpawnPoint();
+
+        PlayerPrefs.DeleteKey("DeathLevel");
+        PlayerPrefs.SetInt("EntryLevel", playerLevel);
+        PlayerPrefs.Save();
     }
 
     private void FindPlayerLvText()
@@ -143,6 +179,41 @@ public class GameManager : MonoBehaviour
         var lvTextObj = playerLvTextCanvas.Find("LvText");
         if (lvTextObj != null)
             playerLvText = lvTextObj.GetComponent<TextMeshProUGUI>();
+    }
+
+    private void FindHealthSlider()
+    {
+        if (playerLvTextCanvas == null) return;
+        var sliderT = playerLvTextCanvas.Find("HealthSlider");
+        if (sliderT == null) return;
+        healthSliderObj = sliderT.gameObject;
+        var fillT = sliderT.Find("HealthSliderFill");
+        if (fillT != null)
+            healthFillImage = fillT.GetComponent<Image>();
+    }
+
+    private void CacheRenderers()
+    {
+        fishRenderers.Clear();
+        originalMaterials.Clear();
+        flashMaterials.Clear();
+        var renderers = fishWorldTransform.GetComponentsInChildren<Renderer>(true);
+        var flashShader = Shader.Find("Custom/SpriteWhiteFlash");
+
+        foreach (var r in renderers)
+        {
+            fishRenderers.Add(r);
+            originalMaterials.Add(r.material);
+
+            if (flashShader != null)
+            {
+                var fm = new Material(flashShader);
+                fm.mainTexture = r.material.mainTexture;
+                fm.SetColor("_FlashColor", new Color(1f, 1f, 1f, 0.9f));
+                fm.SetFloat(FlashAmountID, 0.85f);
+                flashMaterials.Add(fm);
+            }
+        }
     }
 
     private void UpdatePlayerLevelText()
@@ -193,9 +264,7 @@ public class GameManager : MonoBehaviour
     {
         if (fishWorldTransform == null || bgRect == null) return;
 
-        // Use the actual BG scroll position (lerped) so enemies stay in sync with BG
         Vector2 effectiveCamPos = bgStartPos - bgRect.anchoredPosition;
-
         Vector3 anchor = fishWorldTransform.position;
 
         for (int i = enemies.Count - 1; i >= 0; i--)
@@ -264,7 +333,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (fishRect == null || bgRect == null) return;
+        if (fishRect == null || bgRect == null || isDead) return;
 
         UpdateWorldPosition();
         FlipFish();
@@ -469,7 +538,7 @@ public class GameManager : MonoBehaviour
 
     private void CheckEnemyInteractions()
     {
-        if (isEating) return;
+        if (isEating || isInvincible) return;
 
         for (int i = enemies.Count - 1; i >= 0; i--)
         {
@@ -487,7 +556,8 @@ public class GameManager : MonoBehaviour
             if (e.currentState == EnemyFishAI.FishState.Chasing && e.level > playerLevel && d <= enemyKillDistance)
             {
                 e.PlayFood();
-                StartCoroutine(PlayerDeath());
+                StartCoroutine(ResumeEnemyAfterBite(e));
+                TakeDamage();
                 return;
             }
         }
@@ -520,7 +590,6 @@ public class GameManager : MonoBehaviour
             playerLevel++;
             UpdatePlayerScale();
             UpdatePlayerLevelText();
-            SavePlayerLevel();
         }
     }
 
@@ -578,11 +647,171 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator PlayerDeath()
+    #endregion
+
+    private IEnumerator ResumeEnemyAfterBite(EnemyFishAI enemy)
     {
-        isEating = true;
+        yield return new WaitForSeconds(1f);
+        if (enemy != null && enemy.gameObject.activeSelf)
+            enemy.ResumeAfterBite();
+    }
+
+    #region Health & Damage
+
+    private void TakeDamage()
+    {
+        if (isInvincible || isDead) return;
+
+        currentHP--;
+        UpdateHealthSlider();
+        ShowHealthSlider();
+        StartCoroutine(ShakeFish());
+
+        if (currentHP <= 0)
+        {
+            StartCoroutine(HandleDeath());
+        }
+        else
+        {
+            StartCoroutine(DamageCooldown());
+        }
+    }
+
+    private IEnumerator DamageCooldown()
+    {
+        isInvincible = true;
         yield return new WaitForSeconds(1.5f);
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        isInvincible = false;
+    }
+
+    private void UpdateHealthSlider()
+    {
+        if (healthFillImage == null) return;
+        healthFillImage.fillAmount = Mathf.Max(0f, currentHP * (1f / maxHP));
+    }
+
+    private void ShowHealthSlider()
+    {
+        if (healthSliderObj == null) return;
+        healthSliderObj.SetActive(true);
+
+        if (healthSliderHideCoroutine != null)
+            StopCoroutine(healthSliderHideCoroutine);
+        healthSliderHideCoroutine = StartCoroutine(HideHealthSliderAfterDelay());
+    }
+
+    private IEnumerator HideHealthSliderAfterDelay()
+    {
+        yield return new WaitForSeconds(healthSliderShowTime);
+        if (healthSliderObj != null && currentHP > 0)
+            healthSliderObj.SetActive(false);
+    }
+
+    private IEnumerator ShakeFish()
+    {
+        if (fishRect == null) yield break;
+
+        Vector2 origPos = fishRect.anchoredPosition;
+        float elapsed = 0f;
+
+        while (elapsed < shakeDuration)
+        {
+            float offsetX = Random.Range(-shakeAmount, shakeAmount);
+            float offsetY = Random.Range(-shakeAmount, shakeAmount);
+            fishRect.anchoredPosition = origPos + new Vector2(offsetX, offsetY);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        fishRect.anchoredPosition = origPos;
+    }
+
+    private IEnumerator HandleDeath()
+    {
+        isDead = true;
+        isEating = true;
+
+        yield return new WaitForSeconds(0.5f);
+
+        if (!usedSecondChance)
+        {
+            usedSecondChance = true;
+            yield return StartCoroutine(FirstDeathSequence());
+        }
+        else
+        {
+            FinalDeath();
+        }
+    }
+
+    private IEnumerator FirstDeathSequence()
+    {
+        if (firstDeathScreen != null)
+        {
+            firstDeathScreen.SetActive(true);
+
+            var screenAnim = firstDeathScreen.GetComponentInChildren<Animator>();
+            if (screenAnim != null)
+            {
+                screenAnim.Play(0);
+                yield return null; // wait a frame so state info updates
+                var clipInfo = screenAnim.GetCurrentAnimatorStateInfo(0);
+                yield return new WaitForSeconds(clipInfo.length > 0.1f ? clipInfo.length : 2f);
+            }
+            else
+            {
+                yield return new WaitForSeconds(2f);
+            }
+
+            firstDeathScreen.SetActive(false);
+        }
+
+        currentHP = 1;
+        UpdateHealthSlider();
+        if (healthSliderObj != null) healthSliderObj.SetActive(false);
+
+        isDead = false;
+        isEating = false;
+
+        yield return StartCoroutine(InvincibilityFlash());
+    }
+
+    private IEnumerator InvincibilityFlash()
+    {
+        isInvincible = true;
+
+        SetFlash(true);
+        yield return new WaitForSeconds(0.3f);
+        SetFlash(false);
+        yield return new WaitForSeconds(0.3f);
+        SetFlash(true);
+        yield return new WaitForSeconds(0.3f);
+        SetFlash(false);
+
+        isInvincible = false;
+    }
+
+    private void SetFlash(bool white)
+    {
+        for (int i = 0; i < fishRenderers.Count; i++)
+        {
+            if (fishRenderers[i] == null) continue;
+            if (i >= flashMaterials.Count) continue;
+            fishRenderers[i].material = white ? flashMaterials[i] : originalMaterials[i];
+        }
+    }
+
+    private void FinalDeath()
+    {
+        int deathLevel = playerLevel;
+        playerLevel = entryLevel;
+        currentXP = 0;
+        SavePlayerLevel();
+
+        PlayerPrefs.SetInt("DeathLevel", deathLevel);
+        PlayerPrefs.Save();
+
+        SceneManager.LoadScene("MainmenuScene");
     }
 
     #endregion

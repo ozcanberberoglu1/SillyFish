@@ -108,6 +108,7 @@ public class MainmenuManager : MonoBehaviour
     // Level text
     private Transform menuLvTextCanvas;
     private float origMenuLvTextLocalX;
+    private TextMeshProUGUI menuLvTextTMP;
 
     private void Start()
     {
@@ -859,7 +860,8 @@ public class MainmenuManager : MonoBehaviour
 
     private void LoadAndDisplayLevel()
     {
-        int level = PlayerPrefs.GetInt("PlayerLevel", 1);
+        int savedLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
+        int deathLevel = PlayerPrefs.GetInt("DeathLevel", 0);
 
         if (fishAnimator == null) return;
         menuLvTextCanvas = fishAnimator.transform.Find("LvTextCanvas");
@@ -870,8 +872,36 @@ public class MainmenuManager : MonoBehaviour
         var lvTextObj = menuLvTextCanvas.Find("LvText");
         if (lvTextObj == null) return;
 
-        var tmp = lvTextObj.GetComponent<TextMeshProUGUI>();
-        if (tmp != null) tmp.text = $"Lv{level}";
+        menuLvTextTMP = lvTextObj.GetComponent<TextMeshProUGUI>();
+        if (menuLvTextTMP == null) return;
+
+        if (deathLevel > savedLevel)
+        {
+            menuLvTextTMP.text = $"Lv{deathLevel}";
+            StartCoroutine(AnimateMenuLevelDrop(deathLevel, savedLevel));
+        }
+        else
+        {
+            menuLvTextTMP.text = $"Lv{savedLevel}";
+            PlayerPrefs.DeleteKey("DeathLevel");
+        }
+    }
+
+    private IEnumerator AnimateMenuLevelDrop(int from, int to)
+    {
+        yield return new WaitForSeconds(1.5f);
+
+        int current = from;
+        while (current > to)
+        {
+            yield return new WaitForSeconds(0.5f);
+            current--;
+            if (menuLvTextTMP != null)
+                menuLvTextTMP.text = $"Lv{current}";
+        }
+
+        PlayerPrefs.DeleteKey("DeathLevel");
+        PlayerPrefs.Save();
     }
 
     #endregion
