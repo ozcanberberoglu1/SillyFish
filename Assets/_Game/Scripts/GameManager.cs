@@ -19,6 +19,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RawImage fishRenderImage;
 
     [Header("Joystick")]
+    [SerializeField] private RectTransform joystickLine;
     [SerializeField] private RectTransform joystickBase;
     [SerializeField] private RectTransform joystickHandle;
 
@@ -81,6 +82,7 @@ public class GameManager : MonoBehaviour
 
     private Vector2 joystickDirection;
     private float joystickRadius;
+    private bool joystickActive;
     private Camera canvasCamera;
     private RectTransform canvasRect;
 
@@ -127,9 +129,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        if (joystickBase != null)
-            joystickRadius = joystickBase.sizeDelta.x * 0.5f;
-
         if (bgRect != null)
             bgStartPos = bgRect.anchoredPosition;
 
@@ -289,44 +288,106 @@ public class GameManager : MonoBehaviour
 
     private void SetupJoystick()
     {
-        if (joystickBase == null) return;
+        if (joystickBase == null || joystickHandle == null) return;
+        joystickRadius = joystickBase.sizeDelta.x * 0.5f;
 
-        var trigger = joystickBase.GetComponent<EventTrigger>();
-        if (trigger == null)
-            trigger = joystickBase.gameObject.AddComponent<EventTrigger>();
-
-        var pointerDown = new EventTrigger.Entry { eventID = EventTriggerType.PointerDown };
-        pointerDown.callback.AddListener(data => OnJoystickDown((PointerEventData)data));
-        trigger.triggers.Add(pointerDown);
-
-        var drag = new EventTrigger.Entry { eventID = EventTriggerType.Drag };
-        drag.callback.AddListener(data => OnJoystickDrag((PointerEventData)data));
-        trigger.triggers.Add(drag);
-
-        var pointerUp = new EventTrigger.Entry { eventID = EventTriggerType.PointerUp };
-        pointerUp.callback.AddListener(_ => OnJoystickUp());
-        trigger.triggers.Add(pointerUp);
+        if (joystickLine != null)
+            joystickLine.gameObject.SetActive(false);
     }
 
-    private void OnJoystickDown(PointerEventData eventData)
+    private void HandleJoystickInput()
     {
-        OnJoystickDrag(eventData);
+        if (joystickLine == null || joystickBase == null || joystickHandle == null) return;
+
+        // Touch support
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+            switch (touch.phase)
+            {
+                case TouchPhase.Began:
+                    if (IsOverUIButton()) return;
+                    ActivateJoystickAt(touch.position);
+                    break;
+                case TouchPhase.Moved:
+                case TouchPhase.Stationary:
+                    if (joystickActive) UpdateJoystickDrag(touch.position);
+                    break;
+                case TouchPhase.Ended:
+                case TouchPhase.Canceled:
+                    if (joystickActive) DeactivateJoystick();
+                    break;
+            }
+            return;
+        }
+
+        // Mouse support (editor)
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (IsOverUIButton()) return;
+            ActivateJoystickAt(Input.mousePosition);
+        }
+        else if (Input.GetMouseButton(0) && joystickActive)
+        {
+            UpdateJoystickDrag(Input.mousePosition);
+        }
+
+        if (Input.GetMouseButtonUp(0) && joystickActive)
+        {
+            DeactivateJoystick();
+        }
     }
 
-    private void OnJoystickDrag(PointerEventData eventData)
+    private void ActivateJoystickAt(Vector2 screenPos)
+    {
+        joystickActive = true;
+
+        RectTransform parent = joystickLine.parent as RectTransform;
+        if (parent != null)
+        {
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                parent, screenPos, canvasCamera, out Vector2 localPos);
+            joystickLine.anchoredPosition = localPos;
+        }
+
+        joystickLine.gameObject.SetActive(true);
+        joystickHandle.anchoredPosition = Vector2.zero;
+        joystickDirection = Vector2.zero;
+    }
+
+    private void UpdateJoystickDrag(Vector2 screenPos)
     {
         RectTransformUtility.ScreenPointToLocalPointInRectangle(
-            joystickBase, eventData.position, canvasCamera, out Vector2 localPos);
+            joystickBase, screenPos, canvasCamera, out Vector2 localPos);
 
         Vector2 clamped = Vector2.ClampMagnitude(localPos, joystickRadius);
         joystickHandle.anchoredPosition = clamped;
         joystickDirection = clamped / joystickRadius;
     }
 
-    private void OnJoystickUp()
+    private void DeactivateJoystick()
     {
+        joystickActive = false;
         joystickHandle.anchoredPosition = Vector2.zero;
         joystickDirection = Vector2.zero;
+        joystickLine.gameObject.SetActive(false);
+    }
+
+    private bool IsOverUIButton()
+    {
+        var eventData = new PointerEventData(EventSystem.current)
+        {
+            position = (Vector2)Input.mousePosition
+        };
+        var results = new List<UnityEngine.EventSystems.RaycastResult>();
+        EventSystem.current.RaycastAll(eventData, results);
+
+        foreach (var r in results)
+        {
+            if (r.gameObject.GetComponent<Button>() != null)
+                return true;
+        }
+        return false;
     }
 
     #endregion
@@ -335,7 +396,11 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (fishRect == null || bgRect == null || isDead) return;
+        if (fishRect == null || bgRect == null) return;
+
+        HandleJoystickInput();
+
+        if (isDead) return;
 
         UpdateWorldPosition();
         FlipFish();
@@ -604,6 +669,12 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    private IEnumerator DelayedScatter(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        ScatterAllEnemies();
+    }
+
     private void ScatterAllEnemies()
     {
         foreach (var e in enemies)
@@ -781,6 +852,8 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator FirstDeathSequence()
     {
+        StartCoroutine(DelayedScatter(2f));
+
         if (firstDeathScreen != null)
         {
             firstDeathScreen.SetActive(true);
@@ -800,8 +873,6 @@ public class GameManager : MonoBehaviour
 
             firstDeathScreen.SetActive(false);
         }
-
-        ScatterAllEnemies();
 
         currentHP = 1;
         UpdateHealthSlider();
