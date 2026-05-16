@@ -16,10 +16,11 @@ public class EnemyFishAI : MonoBehaviour
     public float minPause = 0.5f;
     public float maxPause = 2.5f;
 
-    public enum FishState { Wandering, Chasing, Fleeing, Paused, Returning }
+    public enum FishState { Wandering, Chasing, Fleeing, Paused, Returning, Hunting }
     [HideInInspector] public FishState currentState = FishState.Paused;
     [HideInInspector] public Vector2 canvasPosition;
     [HideInInspector] public EnemyBehavior behavior = EnemyBehavior.Default;
+    [HideInInspector] public bool canEatLowerLevel;
 
     private Animator anim;
     private Vector2 wanderTarget;
@@ -40,6 +41,11 @@ public class EnemyFishAI : MonoBehaviour
     private bool hasHomeArea;
     private Vector2 homeCenter;
     private Vector2 homeHalfSize;
+
+    // Hunting
+    private EnemyFishAI currentPrey;
+    private float huntTimer;
+    private bool isFleeingFromPredator;
 
     public void Init(GameManager manager, Vector2 startPos, Vector2 bMin, Vector2 bMax)
     {
@@ -87,6 +93,8 @@ public class EnemyFishAI : MonoBehaviour
     {
         if (!ready || isEatingPlayer) return;
 
+        if (FleeFromPredator()) return;
+
         Vector2 playerPos = gm.GetPlayerWorldPosition();
         int playerLevel = gm.GetPlayerLevel();
         float dist = Vector2.Distance(canvasPosition, playerPos);
@@ -108,6 +116,9 @@ public class EnemyFishAI : MonoBehaviour
             case FishState.Returning:
                 UpdateReturning(dist, playerLevel);
                 break;
+            case FishState.Hunting:
+                UpdateHunting(dist, playerLevel);
+                break;
         }
 
         ClampToBounds();
@@ -119,6 +130,7 @@ public class EnemyFishAI : MonoBehaviour
     {
         pauseTimer -= Time.deltaTime;
         if (CheckPlayerInZone(dist, playerLvl)) return;
+        if (TryFindPrey()) return;
 
         if (behavior == EnemyBehavior.Wild)
         {
@@ -136,6 +148,7 @@ public class EnemyFishAI : MonoBehaviour
     private void UpdateWandering(float dist, int playerLvl)
     {
         if (CheckPlayerInZone(dist, playerLvl)) return;
+        if (TryFindPrey()) return;
 
         if (behavior == EnemyBehavior.Wild)
             UpdateWildCycle();
@@ -210,6 +223,7 @@ public class EnemyFishAI : MonoBehaviour
 
     private bool CheckPlayerInZone(float dist, int playerLvl)
     {
+        if (isFleeingFromPredator) return false;
         if (dist > detectionRadius) return false;
 
         if (level > playerLvl)
@@ -275,6 +289,122 @@ public class EnemyFishAI : MonoBehaviour
         wanderTarget = new Vector2(
             Random.Range(homeCenter.x - homeHalfSize.x + margin, homeCenter.x + homeHalfSize.x - margin),
             Random.Range(homeCenter.y - homeHalfSize.y + margin, homeCenter.y + homeHalfSize.y - margin));
+    }
+
+    #endregion
+
+    #region Hunting Behavior
+
+    private bool FleeFromPredator()
+    {
+        if (currentState == FishState.Hunting) return false;
+
+        var allEnemies = gm.GetEnemies();
+        foreach (var other in allEnemies)
+        {
+            if (other == null || other == this || !other.gameObject.activeSelf) continue;
+            if (!other.canEatLowerLevel || other.level <= level) continue;
+
+            float d = Vector2.Distance(canvasPosition, other.canvasPosition);
+            float threshold = isFleeingFromPredator
+                ? other.detectionRadius * 1.6f
+                : other.detectionRadius;
+
+            if (d < threshold)
+            {
+                isFleeingFromPredator = true;
+
+                Vector2 dir = (canvasPosition - other.canvasPosition).normalized;
+                canvasPosition += dir * moveSpeed * 1.3f * Time.deltaTime;
+                Flip(dir.x);
+                ClampToBounds();
+                return true;
+            }
+        }
+
+        isFleeingFromPredator = false;
+        return false;
+    }
+
+    private bool TryFindPrey()
+    {
+        if (!canEatLowerLevel) return false;
+
+        var allEnemies = gm.GetEnemies();
+        EnemyFishAI nearest = null;
+        float nearestDist = detectionRadius;
+
+        foreach (var other in allEnemies)
+        {
+            if (other == null || other == this || !other.gameObject.activeSelf) continue;
+            if (other.level >= level) continue;
+
+            float d = Vector2.Distance(canvasPosition, other.canvasPosition);
+            if (d < nearestDist)
+            {
+                nearestDist = d;
+                nearest = other;
+            }
+        }
+
+        if (nearest != null)
+        {
+            currentPrey = nearest;
+            huntTimer = chaseTime;
+            currentState = FishState.Hunting;
+            return true;
+        }
+
+        return false;
+    }
+
+    private void UpdateHunting(float dist, int playerLvl)
+    {
+        if (CheckPlayerInZone(dist, playerLvl)) { currentPrey = null; return; }
+
+        huntTimer -= Time.deltaTime;
+
+        if (currentPrey == null || !currentPrey.gameObject.activeSelf || huntTimer <= 0f)
+        {
+            currentPrey = null;
+            currentState = FishState.Paused;
+            pauseTimer = Random.Range(minPause, maxPause);
+            PlayIdle();
+            return;
+        }
+
+        float preyDist = Vector2.Distance(canvasPosition, currentPrey.canvasPosition);
+
+        if (preyDist > detectionRadius * 1.5f)
+        {
+            currentPrey = null;
+            currentState = FishState.Paused;
+            pauseTimer = Random.Range(minPause, maxPause);
+            PlayIdle();
+            return;
+        }
+
+        if (preyDist < 30f)
+        {
+            PlayFood();
+            gm.OnEnemyEatEnemy(currentPrey);
+            currentPrey = null;
+            StartCoroutine(ResumeAfterEating());
+            return;
+        }
+
+        Vector2 dir = (currentPrey.canvasPosition - canvasPosition).normalized;
+        canvasPosition += dir * moveSpeed * 1.4f * Time.deltaTime;
+        Flip(dir.x);
+    }
+
+    private System.Collections.IEnumerator ResumeAfterEating()
+    {
+        yield return new WaitForSeconds(1f);
+        isEatingPlayer = false;
+        PickAppropriateTarget();
+        currentState = FishState.Wandering;
+        PlayIdle();
     }
 
     #endregion

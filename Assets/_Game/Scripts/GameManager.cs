@@ -76,6 +76,7 @@ public class GameManager : MonoBehaviour
         public float chaseTime = 2.5f;
         public EnemyFishAI.EnemyBehavior behavior = EnemyFishAI.EnemyBehavior.Default;
         public RectTransform swimArea;
+        public bool canEatLowerLevel;
     }
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -126,6 +127,7 @@ public class GameManager : MonoBehaviour
 
     public Vector2 GetPlayerWorldPosition() => worldPosition;
     public int GetPlayerLevel() => playerLevel;
+    public List<EnemyFishAI> GetEnemies() => enemies;
 
     private void Start()
     {
@@ -574,6 +576,7 @@ public class GameManager : MonoBehaviour
                 ai.detectionRadius = cfg.detectionRadius;
                 ai.chaseTime = cfg.chaseTime;
                 ai.behavior = cfg.behavior;
+                ai.canEatLowerLevel = cfg.canEatLowerLevel;
                 ai.Init(this, pos, enemyBoundsMin, enemyBoundsMax);
 
                 if (cfg.behavior == EnemyFishAI.EnemyBehavior.Mysterious && cfg.swimArea != null)
@@ -603,6 +606,13 @@ public class GameManager : MonoBehaviour
         } while (pos.magnitude < 800f && attempts < 30);
 
         return pos;
+    }
+
+    public void OnEnemyEatEnemy(EnemyFishAI prey)
+    {
+        if (prey == null || !prey.gameObject.activeSelf) return;
+        prey.gameObject.SetActive(false);
+        StartCoroutine(RespawnEnemy(prey));
     }
 
     private void SetLayerRecursive(GameObject obj, int layer)
