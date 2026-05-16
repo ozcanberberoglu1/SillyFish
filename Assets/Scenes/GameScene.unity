@@ -229,6 +229,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 296192287}
   m_CullTransparentMesh: 1
+--- !u!1 &333004484
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 333004485}
+  m_Layer: 5
+  m_Name: enemySwimArea1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &333004485
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 333004484}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1817258770}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -1345}
+  m_SizeDelta: {x: 7583.4805, y: 1154.3943}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &676939299
 GameObject:
   m_ObjectHideFlags: 0
@@ -1202,6 +1237,7 @@ RectTransform:
   m_Children:
   - {fileID: 739381681}
   - {fileID: 1841779489}
+  - {fileID: 333004485}
   m_Father: {fileID: 676939303}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1385,9 +1421,11 @@ MonoBehaviour:
     level: 1
     xp: 1
     count: 8
-    speed: 90
+    speed: 150
     detectionRadius: 300
     chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: 3487c8e15b1104fde96983550e297683, type: 3}
     level: 2
     xp: 2
@@ -1395,48 +1433,53 @@ MonoBehaviour:
     speed: 90
     detectionRadius: 400
     chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: e48109ca3c3da4856a141e6acf0b9545, type: 3}
     level: 3
     xp: 3
     count: 4
-    speed: 60
+    speed: 150
     detectionRadius: 500
     chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: bbb0ccadd036043e285805e64481e0cf, type: 3}
     level: 4
     xp: 4
     count: 3
     speed: 100
-    detectionRadius: 600
+    detectionRadius: 300
     chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: f74d75d4de76a4886a0832dcef37c9cb, type: 3}
     level: 5
     xp: 1
     count: 2
     speed: 120
-    detectionRadius: 700
+    detectionRadius: 100
     chaseTime: 2.5
-  - prefab: {fileID: 6836182319577743249, guid: f74d75d4de76a4886a0832dcef37c9cb, type: 3}
-    level: 5
-    xp: 1
-    count: 2
-    speed: 120
-    detectionRadius: 700
-    chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: 5ea429e4eac284a92879e45ff34796d2, type: 3}
     level: 6
     xp: 1
     count: 2
     speed: 120
-    detectionRadius: 700
+    detectionRadius: 300
     chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: 128e527c5b6db4e6f95821269ac1bcf4, type: 3}
     level: 10
     xp: 1
     count: 2
-    speed: 120
-    detectionRadius: 700
+    speed: 70
+    detectionRadius: 200
     chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
   - prefab: {fileID: 6836182319577743249, guid: 346c86278ec7b4b2db1eac71919fb06c, type: 3}
     level: 25
     xp: 1
@@ -1444,20 +1487,26 @@ MonoBehaviour:
     speed: 120
     detectionRadius: 700
     chaseTime: 2.5
+    behavior: 2
+    swimArea: {fileID: 333004485}
   - prefab: {fileID: 6836182319577743249, guid: 1fb8dfa672dce41549b6a185edd3ecd7, type: 3}
     level: 30
     xp: 1
     count: 2
-    speed: 120
+    speed: 150
     detectionRadius: 700
     chaseTime: 2.5
-  - prefab: {fileID: 6836182319577743249, guid: 1fb8dfa672dce41549b6a185edd3ecd7, type: 3}
+    behavior: 1
+    swimArea: {fileID: 0}
+  - prefab: {fileID: 6836182319577743249, guid: 06ea9e081b85b4fca962a946c1989d7e, type: 3}
     level: 30
     xp: 1
     count: 2
-    speed: 120
+    speed: 200
     detectionRadius: 700
     chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
   portalSpawnPoint: {fileID: 1413977235}
   portalNextPoint: {fileID: 211194731}
   portalEnterDistance: 100
@@ -1466,7 +1515,6 @@ MonoBehaviour:
   shakeAmount: 10
   shakeDuration: 0.2
   firstDeathScreen: {fileID: 1214702386}
-  levelDropSpeed: 2
 --- !u!4 &2140358940
 Transform:
   m_ObjectHideFlags: 0

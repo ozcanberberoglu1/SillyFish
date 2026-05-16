@@ -73,6 +73,8 @@ public class GameManager : MonoBehaviour
         public float speed = 150f;
         public float detectionRadius = 400f;
         public float chaseTime = 2.5f;
+        public EnemyFishAI.EnemyBehavior behavior = EnemyFishAI.EnemyBehavior.Default;
+        public RectTransform swimArea;
     }
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -506,7 +508,16 @@ public class GameManager : MonoBehaviour
                 ai.moveSpeed = cfg.speed;
                 ai.detectionRadius = cfg.detectionRadius;
                 ai.chaseTime = cfg.chaseTime;
+                ai.behavior = cfg.behavior;
                 ai.Init(this, pos, enemyBoundsMin, enemyBoundsMax);
+
+                if (cfg.behavior == EnemyFishAI.EnemyBehavior.Mysterious && cfg.swimArea != null)
+                {
+                    Vector3 localInBG = bgRect.InverseTransformPoint(cfg.swimArea.position);
+                    Vector2 center = new Vector2(localInBG.x, localInBG.y);
+                    Vector2 halfSize = cfg.swimArea.sizeDelta * 0.5f;
+                    ai.SetHomeArea(center, halfSize);
+                }
 
                 enemies.Add(ai);
             }
@@ -590,6 +601,30 @@ public class GameManager : MonoBehaviour
             playerLevel++;
             UpdatePlayerScale();
             UpdatePlayerLevelText();
+        }
+    }
+
+    private void ScatterAllEnemies()
+    {
+        foreach (var e in enemies)
+        {
+            if (e == null) continue;
+            Vector2 newPos = RandomSpawnPosition();
+            e.canvasPosition = newPos;
+
+            if (fishWorldTransform != null && bgRect != null)
+            {
+                Vector2 effectiveCamPos = bgStartPos - bgRect.anchoredPosition;
+                Vector2 offset = newPos - effectiveCamPos;
+                Vector3 anchor = fishWorldTransform.position;
+                e.transform.position = new Vector3(
+                    anchor.x + offset.x * canvasToWorld,
+                    anchor.y + offset.y * canvasToWorld,
+                    anchor.z);
+            }
+
+            if (e.gameObject.activeSelf)
+                e.Respawn(newPos, enemyBoundsMin, enemyBoundsMax);
         }
     }
 
@@ -765,6 +800,8 @@ public class GameManager : MonoBehaviour
 
             firstDeathScreen.SetActive(false);
         }
+
+        ScatterAllEnemies();
 
         currentHP = 1;
         UpdateHealthSlider();

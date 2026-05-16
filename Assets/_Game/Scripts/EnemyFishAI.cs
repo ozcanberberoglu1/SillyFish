@@ -3,6 +3,8 @@ using TMPro;
 
 public class EnemyFishAI : MonoBehaviour
 {
+    public enum EnemyBehavior { Default, Wild, Mysterious }
+
     [Header("Stats")]
     public int level = 1;
     public int xp = 1;
@@ -14,9 +16,10 @@ public class EnemyFishAI : MonoBehaviour
     public float minPause = 0.5f;
     public float maxPause = 2.5f;
 
-    public enum FishState { Wandering, Chasing, Fleeing, Paused }
+    public enum FishState { Wandering, Chasing, Fleeing, Paused, Returning }
     [HideInInspector] public FishState currentState = FishState.Paused;
     [HideInInspector] public Vector2 canvasPosition;
+    [HideInInspector] public EnemyBehavior behavior = EnemyBehavior.Default;
 
     private Animator anim;
     private Vector2 wanderTarget;
@@ -28,6 +31,15 @@ public class EnemyFishAI : MonoBehaviour
     private bool isEatingPlayer;
     private Transform lvTextCanvas;
     private float origLvTextLocalX;
+
+    // Wild behavior
+    private bool wildIsMoving;
+    private float wildCycleTimer;
+
+    // Mysterious behavior
+    private bool hasHomeArea;
+    private Vector2 homeCenter;
+    private Vector2 homeHalfSize;
 
     public void Init(GameManager manager, Vector2 startPos, Vector2 bMin, Vector2 bMax)
     {
@@ -41,6 +53,22 @@ public class EnemyFishAI : MonoBehaviour
         currentState = FishState.Wandering;
         ready = true;
         PlayIdle();
+
+        if (behavior == EnemyBehavior.Wild)
+        {
+            wildIsMoving = false;
+            wildCycleTimer = Random.Range(3f, 4f);
+        }
+    }
+
+    public void SetHomeArea(Vector2 center, Vector2 halfSize)
+    {
+        hasHomeArea = true;
+        homeCenter = center;
+        homeHalfSize = halfSize;
+
+        canvasPosition = center;
+        PickWanderTargetInHome();
     }
 
     private void SetupLevelText()
@@ -77,18 +105,30 @@ public class EnemyFishAI : MonoBehaviour
             case FishState.Fleeing:
                 UpdateFleeing(playerPos, dist);
                 break;
+            case FishState.Returning:
+                UpdateReturning(dist, playerLevel);
+                break;
         }
 
         ClampToBounds();
     }
 
+    #region Default & Shared
+
     private void UpdatePaused(float dist, int playerLvl)
     {
         pauseTimer -= Time.deltaTime;
         if (CheckPlayerInZone(dist, playerLvl)) return;
+
+        if (behavior == EnemyBehavior.Wild)
+        {
+            UpdateWildCycle();
+            return;
+        }
+
         if (pauseTimer <= 0f)
         {
-            PickWanderTarget();
+            PickAppropriateTarget();
             currentState = FishState.Wandering;
         }
     }
@@ -97,16 +137,28 @@ public class EnemyFishAI : MonoBehaviour
     {
         if (CheckPlayerInZone(dist, playerLvl)) return;
 
+        if (behavior == EnemyBehavior.Wild)
+            UpdateWildCycle();
+
         Vector2 dir = wanderTarget - canvasPosition;
         if (dir.magnitude < 30f)
         {
+            if (behavior == EnemyBehavior.Wild && wildIsMoving)
+            {
+                PickAppropriateTarget();
+                return;
+            }
             currentState = FishState.Paused;
             pauseTimer = Random.Range(minPause, maxPause);
             return;
         }
 
+        float speed = moveSpeed;
+        if (behavior == EnemyBehavior.Wild && wildIsMoving)
+            speed *= 2.5f;
+
         dir.Normalize();
-        canvasPosition += dir * moveSpeed * Time.deltaTime;
+        canvasPosition += dir * speed * Time.deltaTime;
         Flip(dir.x);
     }
 
@@ -116,9 +168,17 @@ public class EnemyFishAI : MonoBehaviour
 
         if (stateTimer <= 0f || dist > detectionRadius * 1.5f)
         {
-            currentState = FishState.Paused;
-            pauseTimer = Random.Range(minPause, maxPause);
-            PlayIdle();
+            if (behavior == EnemyBehavior.Mysterious && hasHomeArea)
+            {
+                currentState = FishState.Returning;
+                PlayIdle();
+            }
+            else
+            {
+                currentState = FishState.Paused;
+                pauseTimer = Random.Range(minPause, maxPause);
+                PlayIdle();
+            }
             return;
         }
 
@@ -131,8 +191,15 @@ public class EnemyFishAI : MonoBehaviour
     {
         if (dist > detectionRadius * 1.3f)
         {
-            currentState = FishState.Paused;
-            pauseTimer = Random.Range(minPause, maxPause);
+            if (behavior == EnemyBehavior.Mysterious && hasHomeArea)
+            {
+                currentState = FishState.Returning;
+            }
+            else
+            {
+                currentState = FishState.Paused;
+                pauseTimer = Random.Range(minPause, maxPause);
+            }
             return;
         }
 
@@ -152,9 +219,74 @@ public class EnemyFishAI : MonoBehaviour
             return true;
         }
 
-        // Same or lower level: flee (only the player can eat same-level fish)
         currentState = FishState.Fleeing;
         return true;
+    }
+
+    #endregion
+
+    #region Wild Behavior
+
+    private void UpdateWildCycle()
+    {
+        wildCycleTimer -= Time.deltaTime;
+        if (wildCycleTimer <= 0f)
+        {
+            wildIsMoving = !wildIsMoving;
+            wildCycleTimer = Random.Range(3f, 4f);
+
+            if (wildIsMoving)
+            {
+                PickAppropriateTarget();
+                currentState = FishState.Wandering;
+            }
+            else
+            {
+                currentState = FishState.Paused;
+                pauseTimer = wildCycleTimer;
+            }
+        }
+    }
+
+    #endregion
+
+    #region Mysterious Behavior
+
+    private void UpdateReturning(float dist, int playerLvl)
+    {
+        if (CheckPlayerInZone(dist, playerLvl)) return;
+
+        Vector2 dir = homeCenter - canvasPosition;
+        if (dir.magnitude < 50f)
+        {
+            PickWanderTargetInHome();
+            currentState = FishState.Wandering;
+            return;
+        }
+
+        dir.Normalize();
+        canvasPosition += dir * moveSpeed * Time.deltaTime;
+        Flip(dir.x);
+    }
+
+    private void PickWanderTargetInHome()
+    {
+        float margin = 30f;
+        wanderTarget = new Vector2(
+            Random.Range(homeCenter.x - homeHalfSize.x + margin, homeCenter.x + homeHalfSize.x - margin),
+            Random.Range(homeCenter.y - homeHalfSize.y + margin, homeCenter.y + homeHalfSize.y - margin));
+    }
+
+    #endregion
+
+    #region Shared Helpers
+
+    private void PickAppropriateTarget()
+    {
+        if (behavior == EnemyBehavior.Mysterious && hasHomeArea)
+            PickWanderTargetInHome();
+        else
+            PickWanderTarget();
     }
 
     private void PickWanderTarget()
@@ -198,9 +330,15 @@ public class EnemyFishAI : MonoBehaviour
         boundsMin = bMin;
         boundsMax = bMax;
         isEatingPlayer = false;
-        PickWanderTarget();
+        PickAppropriateTarget();
         currentState = FishState.Wandering;
         PlayIdle();
+
+        if (behavior == EnemyBehavior.Wild)
+        {
+            wildIsMoving = false;
+            wildCycleTimer = Random.Range(3f, 4f);
+        }
     }
 
     public void PlayIdle()
@@ -217,8 +355,10 @@ public class EnemyFishAI : MonoBehaviour
     public void ResumeAfterBite()
     {
         isEatingPlayer = false;
-        PickWanderTarget();
+        PickAppropriateTarget();
         currentState = FishState.Wandering;
         PlayIdle();
     }
+
+    #endregion
 }
