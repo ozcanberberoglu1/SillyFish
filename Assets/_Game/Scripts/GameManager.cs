@@ -100,6 +100,13 @@ public class GameManager : MonoBehaviour
     [Tooltip("İlk ölümde gösterilecek ikinci şans ekranı (animasyonlu)")]
     [SerializeField] private GameObject firstDeathScreen;
 
+    [Header("Skills")]
+    [Tooltip("Skill prefablarının spawn olacağı alan (BG altında RectTransform)")]
+    [SerializeField] private RectTransform skillArea;
+    [Tooltip("Skill'i yeme mesafesi (piksel)")]
+    [SerializeField] private float skillPickupDistance = 80f;
+    [SerializeField] private List<SkillConfig> skillConfigs = new List<SkillConfig>();
+
     [Header("Combo")]
     [Tooltip("ComboText prefab'ı (TextMeshProUGUI içermeli)")]
     [SerializeField] private GameObject comboTextPrefab;
@@ -142,6 +149,23 @@ public class GameManager : MonoBehaviour
         public int spawnCount = 5;
     }
 
+    public enum SkillType { Shield, Health, Magnet }
+
+    [System.Serializable]
+    public class SkillConfig
+    {
+        [Tooltip("Skill türü")]
+        public SkillType type;
+        [Tooltip("Skill prefab'ı (sahnede spawn olacak obje)")]
+        public GameObject prefab;
+        [Tooltip("Aynı anda kaç tane spawn olacak")]
+        public int spawnCount = 1;
+        [Tooltip("Yenildikten sonra tekrar spawn olma süresi (saniye)")]
+        public float respawnTime = 15f;
+        [Tooltip("Skill etki süresi (saniye) - Shield ve Mıknatıs için")]
+        public float duration = 10f;
+    }
+
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
 
     private Vector2 joystickDirection;
@@ -161,6 +185,20 @@ public class GameManager : MonoBehaviour
 
     // Combo
     private List<float> recentKillTimes = new List<float>();
+
+    // Skills
+    private List<RectTransform> activeSkills = new List<RectTransform>();
+    private List<SkillType> activeSkillTypes = new List<SkillType>();
+    private List<SkillConfig> activeSkillConfigs = new List<SkillConfig>();
+    private bool shieldActive;
+    private bool magnetActive;
+    private GameObject shieldObj;
+    private GameObject healthPlusObj;
+    private GameObject magnetIconObj;
+    private GameObject shieldSliderParent;
+    private Image shieldSliderFill;
+    private GameObject magnetSliderParent;
+    private Image magnetSliderFill;
 
     private List<EnemyFishAI> enemies = new List<EnemyFishAI>();
     private Transform enemyContainer;
@@ -195,6 +233,8 @@ public class GameManager : MonoBehaviour
     public Vector2 GetPlayerWorldPosition() => worldPosition;
     public int GetPlayerLevel() => playerLevel;
     public List<EnemyFishAI> GetEnemies() => enemies;
+    public bool IsShieldActive() => shieldActive;
+    public bool IsMagnetActive() => magnetActive;
 
     private void Start()
     {
@@ -219,6 +259,7 @@ public class GameManager : MonoBehaviour
             origWorldFishScale = fishWorldTransform.localScale;
             FindPlayerLvText();
             FindHealthSlider();
+            FindSkillObjects();
             CacheRenderers();
         }
 
@@ -231,6 +272,7 @@ public class GameManager : MonoBehaviour
         SetupFishRendering();
         CalculateEnemyBounds();
         SpawnEnemies();
+        SpawnSkills();
         UpdatePlayerScale();
         UpdatePlayerLevelText();
         MoveToSpawnPoint();
@@ -476,6 +518,7 @@ public class GameManager : MonoBehaviour
         UpdateAnimation();
         UpdateCamera();
         CheckFoodEat();
+        CheckSkillPickup();
         SyncEnemyWorldPositions();
         CheckEnemyInteractions();
         CheckPortal();
@@ -713,7 +756,7 @@ public class GameManager : MonoBehaviour
                 return;
             }
 
-            if (e.currentState == EnemyFishAI.FishState.Chasing && e.level > playerLevel && d <= enemyKillDistance)
+            if (!shieldActive && e.currentState == EnemyFishAI.FishState.Chasing && e.level > playerLevel && d <= enemyKillDistance)
             {
                 e.PlayFood();
                 StartCoroutine(ResumeEnemyAfterBite(e));
@@ -1076,6 +1119,210 @@ public class GameManager : MonoBehaviour
 
         if (rt != null)
             Destroy(rt.gameObject);
+    }
+
+    #endregion
+
+    #region Skills
+
+    private void FindSkillObjects()
+    {
+        int fishLayer = fishWorldTransform.gameObject.layer;
+
+        shieldObj = fishWorldTransform.Find("BalıkSkillShield")?.gameObject
+                 ?? fishWorldTransform.Find("BalikSkillShield")?.gameObject;
+        if (shieldObj != null) { SetLayerRecursive(shieldObj, fishLayer); shieldObj.SetActive(false); }
+
+        if (playerLvTextCanvas == null) return;
+
+        healthPlusObj = playerLvTextCanvas.Find("+health")?.gameObject;
+        if (healthPlusObj != null) { SetLayerRecursive(healthPlusObj, fishLayer); healthPlusObj.SetActive(false); }
+
+        magnetIconObj = playerLvTextCanvas.Find("+mıknatıs")?.gameObject
+                     ?? playerLvTextCanvas.Find("+miknatıs")?.gameObject
+                     ?? playerLvTextCanvas.Find("+miknatis")?.gameObject;
+        if (magnetIconObj != null) { SetLayerRecursive(magnetIconObj, fishLayer); magnetIconObj.SetActive(false); }
+
+        var skillSlidersT = playerLvTextCanvas.Find("SkillSliders");
+        if (skillSlidersT == null) return;
+        SetLayerRecursive(skillSlidersT.gameObject, fishLayer);
+
+        var shieldT = skillSlidersT.Find("Shield");
+        if (shieldT != null)
+        {
+            shieldSliderParent = shieldT.gameObject;
+            var fill = shieldT.Find("SkillSlider/SliderFill") ?? shieldT.Find("SkillSilder/SliderFill");
+            if (fill != null) shieldSliderFill = fill.GetComponent<Image>();
+            shieldSliderParent.SetActive(false);
+        }
+
+        var magnetT = skillSlidersT.Find("Magnet");
+        if (magnetT != null)
+        {
+            magnetSliderParent = magnetT.gameObject;
+            var fill = magnetT.Find("SkillSlider/SliderFill") ?? magnetT.Find("SkillSilder/SliderFill");
+            if (fill != null) magnetSliderFill = fill.GetComponent<Image>();
+            magnetSliderParent.SetActive(false);
+        }
+    }
+
+    private void SpawnSkills()
+    {
+        if (skillConfigs == null || skillArea == null) return;
+
+        foreach (var cfg in skillConfigs)
+        {
+            if (cfg.prefab == null) continue;
+            for (int i = 0; i < cfg.spawnCount; i++)
+                SpawnOneSkill(cfg);
+        }
+    }
+
+    private void SpawnOneSkill(SkillConfig cfg)
+    {
+        if (cfg.prefab == null || skillArea == null) return;
+
+        Rect area = skillArea.rect;
+        float x = Random.Range(area.xMin * 0.8f, area.xMax * 0.8f);
+        float y = Random.Range(area.yMin * 0.8f, area.yMax * 0.8f);
+
+        GameObject go = Instantiate(cfg.prefab, skillArea);
+        RectTransform rt = go.GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            rt.anchoredPosition = new Vector2(x, y);
+            activeSkills.Add(rt);
+            activeSkillTypes.Add(cfg.type);
+            activeSkillConfigs.Add(cfg);
+        }
+    }
+
+    private void CheckSkillPickup()
+    {
+        if (isEating) return;
+
+        for (int i = activeSkills.Count - 1; i >= 0; i--)
+        {
+            if (activeSkills[i] == null)
+            {
+                activeSkills.RemoveAt(i);
+                activeSkillTypes.RemoveAt(i);
+                activeSkillConfigs.RemoveAt(i);
+                continue;
+            }
+
+            float dist = Vector2.Distance(fishRect.position, activeSkills[i].position);
+            if (dist < skillPickupDistance)
+            {
+                SkillType type = activeSkillTypes[i];
+                SkillConfig cfg = activeSkillConfigs[i];
+
+                Destroy(activeSkills[i].gameObject);
+                activeSkills.RemoveAt(i);
+                activeSkillTypes.RemoveAt(i);
+                activeSkillConfigs.RemoveAt(i);
+
+                StartCoroutine(RespawnSkillAfterDelay(cfg));
+                ActivateSkill(type, cfg);
+
+                if (fishAnimator != null)
+                    fishAnimator.CrossFade("FishFoodAnim", 0.1f, 0, 0f);
+                break;
+            }
+        }
+    }
+
+    private IEnumerator RespawnSkillAfterDelay(SkillConfig cfg)
+    {
+        yield return new WaitForSeconds(cfg.respawnTime);
+        SpawnOneSkill(cfg);
+    }
+
+    private void ActivateSkill(SkillType type, SkillConfig cfg)
+    {
+        switch (type)
+        {
+            case SkillType.Shield:
+                StartCoroutine(ShieldRoutine(cfg.duration));
+                break;
+            case SkillType.Health:
+                ApplyHealthSkill();
+                break;
+            case SkillType.Magnet:
+                StartCoroutine(MagnetRoutine(cfg.duration));
+                break;
+        }
+    }
+
+    private IEnumerator ShieldRoutine(float duration)
+    {
+        shieldActive = true;
+        if (shieldObj != null) shieldObj.SetActive(true);
+
+        foreach (var e in enemies)
+        {
+            if (e != null && e.gameObject.activeSelf &&
+                e.currentState == EnemyFishAI.FishState.Chasing && e.level > playerLevel)
+            {
+                e.ResumeAfterBite();
+            }
+        }
+
+        if (shieldSliderParent != null) shieldSliderParent.SetActive(true);
+        if (shieldSliderFill != null) shieldSliderFill.fillAmount = 1f;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            if (shieldSliderFill != null)
+                shieldSliderFill.fillAmount = 1f - (elapsed / duration);
+            yield return null;
+        }
+
+        shieldActive = false;
+        if (shieldObj != null) shieldObj.SetActive(false);
+        if (shieldSliderParent != null) shieldSliderParent.SetActive(false);
+    }
+
+    private void ApplyHealthSkill()
+    {
+        if (currentHP < maxHP)
+        {
+            currentHP++;
+            UpdateHealthSlider();
+        }
+
+        if (healthPlusObj != null)
+            StartCoroutine(ShowHealthPlus());
+    }
+
+    private IEnumerator ShowHealthPlus()
+    {
+        healthPlusObj.SetActive(true);
+        yield return new WaitForSeconds(2f);
+        if (healthPlusObj != null) healthPlusObj.SetActive(false);
+    }
+
+    private IEnumerator MagnetRoutine(float duration)
+    {
+        magnetActive = true;
+        if (magnetIconObj != null) magnetIconObj.SetActive(true);
+        if (magnetSliderParent != null) magnetSliderParent.SetActive(true);
+        if (magnetSliderFill != null) magnetSliderFill.fillAmount = 1f;
+
+        float elapsed = 0f;
+        while (elapsed < duration)
+        {
+            elapsed += Time.deltaTime;
+            if (magnetSliderFill != null)
+                magnetSliderFill.fillAmount = 1f - (elapsed / duration);
+            yield return null;
+        }
+
+        magnetActive = false;
+        if (magnetIconObj != null) magnetIconObj.SetActive(false);
+        if (magnetSliderParent != null) magnetSliderParent.SetActive(false);
     }
 
     #endregion

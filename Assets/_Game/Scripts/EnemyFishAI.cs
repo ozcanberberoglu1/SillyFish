@@ -224,17 +224,32 @@ public class EnemyFishAI : MonoBehaviour
     private bool CheckPlayerInZone(float dist, int playerLvl)
     {
         if (isFleeingFromPredator) return false;
+
+        if (gm.IsMagnetActive() && level <= playerLvl)
+        {
+            Vector2 playerPos = gm.GetPlayerWorldPosition();
+            Vector2 dir = (playerPos - canvasPosition).normalized;
+            canvasPosition += dir * moveSpeed * 1.5f * Time.deltaTime;
+            Flip(dir.x);
+            return true;
+        }
+
         if (dist > detectionRadius) return false;
 
-        if (level > playerLvl)
+        if (level > playerLvl && !gm.IsShieldActive())
         {
             currentState = FishState.Chasing;
             stateTimer = chaseTime;
             return true;
         }
 
-        currentState = FishState.Fleeing;
-        return true;
+        if (level <= playerLvl)
+        {
+            currentState = FishState.Fleeing;
+            return true;
+        }
+
+        return false;
     }
 
     #endregion
