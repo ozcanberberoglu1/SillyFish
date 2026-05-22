@@ -9,74 +9,137 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     [Header("Fish")]
+    [Tooltip("Balığımızın Canvas'taki RectTransform'u")]
     [SerializeField] private RectTransform fishRect;
+    [Tooltip("Balığımızın Animator bileşeni")]
     [SerializeField] private Animator fishAnimator;
+    [Tooltip("Balığımızın hareket hızı (piksel/saniye)")]
     [SerializeField] private float moveSpeed = 300f;
 
     [Header("Fish World Rendering")]
+    [Tooltip("BalıkSpriteRenderer'ın Transform'u (dünya uzayında)")]
     [SerializeField] private Transform fishWorldTransform;
+    [Tooltip("Balıkları renderlamak için kullanılan kamera")]
     [SerializeField] private Camera fishCamera;
+    [Tooltip("Balık kamerasının render texture'ını gösteren RawImage")]
     [SerializeField] private RawImage fishRenderImage;
 
     [Header("Joystick")]
+    [Tooltip("Joystick'in ana kapsayıcısı (tıklayınca açılır, bırakınca kapanır)")]
     [SerializeField] private RectTransform joystickLine;
+    [Tooltip("Joystick'in arka plan dairesi")]
     [SerializeField] private RectTransform joystickBase;
+    [Tooltip("Joystick'in sürüklenen topuzu")]
     [SerializeField] private RectTransform joystickHandle;
 
     [Header("Background & Camera")]
+    [Tooltip("Arka plan (BG) RectTransform'u")]
     [SerializeField] private RectTransform bgRect;
+    [Tooltip("Ana oyun kamerası")]
     [SerializeField] private Camera gameCamera;
+    [Tooltip("Kameranın hedefe ulaşma yumuşaklığı (yüksek = hızlı takip)")]
     [SerializeField] private float cameraSmoothSpeed = 12f;
 
     [Header("Food")]
+    [Tooltip("Yem prefab listesi (rastgele seçilir)")]
     [SerializeField] private List<GameObject> foodPrefabs;
+    [Tooltip("Yemlerin spawn olacağı panel")]
     [SerializeField] private RectTransform foodsPanel;
+    [Tooltip("Minimum yem sayısı")]
     [SerializeField] private int minFoodCount = 10;
+    [Tooltip("Maksimum yem sayısı")]
     [SerializeField] private int maxFoodCount = 13;
+    [Tooltip("Yem boyut çarpanı")]
     [SerializeField] private float foodScale = 1f;
+    [Tooltip("Yemi yeme mesafesi (piksel)")]
     [SerializeField] private float eatDistance = 80f;
+    [Tooltip("Yeme animasyonu süresi (saniye)")]
     [SerializeField] private float eatAnimDuration = 0.8f;
 
     [Header("Player Level")]
+    [Tooltip("Balığımızın başlangıç boyutu (scale)")]
     [SerializeField] private float baseScale = 0.5f;
+    [Tooltip("Her level'de ne kadar büyüyeceği")]
     [SerializeField] private float scalePerLevel = 0.2f;
+    [Tooltip("Level atlamak için gereken XP çarpanı (gerekli XP = bu değer × mevcut level)")]
     [SerializeField] private int baseXPMultiplier = 5;
+    [Tooltip("Düşman balığı yeme mesafesi (piksel)")]
     [SerializeField] private float playerEatDistance = 50f;
+    [Tooltip("Düşman balığın bizi öldürme mesafesi (piksel, küçük = zor öldürür)")]
     [SerializeField] private float enemyKillDistance = 15f;
+    [Tooltip("Yenilen düşmanın yeniden doğma süresi - minimum (saniye)")]
     [SerializeField] private float respawnTimeMin = 5f;
+    [Tooltip("Yenilen düşmanın yeniden doğma süresi - maksimum (saniye)")]
     [SerializeField] private float respawnTimeMax = 7f;
+    [Tooltip("Her level'de kameranın ne kadar uzaklaşacağı (orthographic size artışı)")]
     [SerializeField] private float cameraSizePerLevel = 0.5f;
 
     [Header("Enemy Fish")]
+    [Tooltip("Düşman balık türlerinin ayarları")]
     [SerializeField] private List<EnemySpawnConfig> enemySpawnConfigs = new List<EnemySpawnConfig>();
 
     [Header("Portal")]
+    [Tooltip("Portal giriş noktası (buraya yaklaşınca MainMenu'ye döner)")]
     [SerializeField] private RectTransform portalSpawnPoint;
+    [Tooltip("Oyun başladığında balığımızın spawn olacağı nokta")]
     [SerializeField] private RectTransform portalNextPoint;
+    [Tooltip("Portala giriş mesafesi (piksel)")]
     [SerializeField] private float portalEnterDistance = 100f;
 
     [Header("Health")]
+    [Tooltip("Maksimum can sayısı (kaç ısırık yiyebilir)")]
     [SerializeField] private int maxHP = 3;
+    [Tooltip("Can barının görünür kalma süresi (saniye)")]
     [SerializeField] private float healthSliderShowTime = 2f;
+    [Tooltip("Hasar alınca titreme miktarı (piksel)")]
     [SerializeField] private float shakeAmount = 10f;
+    [Tooltip("Hasar alınca titreme süresi (saniye)")]
     [SerializeField] private float shakeDuration = 0.2f;
 
     [Header("Death Screen")]
+    [Tooltip("İlk ölümde gösterilecek ikinci şans ekranı (animasyonlu)")]
     [SerializeField] private GameObject firstDeathScreen;
+
+    [Header("Combo")]
+    [Tooltip("ComboText prefab'ı (TextMeshProUGUI içermeli)")]
+    [SerializeField] private GameObject comboTextPrefab;
+    [Tooltip("ComboText'in spawn olacağı parent obje")]
+    [SerializeField] private RectTransform comboTextSpawnPoint;
+    [Tooltip("Combo için gereken süre (saniye)")]
+    [SerializeField] private float comboTimeWindow = 3f;
+    [Tooltip("Combo için gereken yeme sayısı")]
+    [SerializeField] private int comboKillCount = 5;
+    [Tooltip("Combo yazıları (rastgele seçilir)")]
+    [SerializeField] private List<string> comboMessages = new List<string>
+        { "Harika!", "Mükemmel!", "Olağanüstü!", "Canavar!", "Efsane!", "Muhteşem!" };
 
     [System.Serializable]
     public class EnemySpawnConfig
     {
+        [Tooltip("Düşman balık prefab'ı")]
         public GameObject prefab;
+        [Tooltip("Bu balığın level'i")]
         public int level = 1;
+        [Tooltip("Yenildiğinde oyuncuya verdiği XP")]
         public int xp = 1;
+        [Tooltip("Eski spawn sayısı (spawnCount kullan)")]
         public int count = 5;
+        [Tooltip("Yüzme hızı")]
         public float speed = 150f;
+        [Tooltip("Oyuncuyu algılama yarıçapı (piksel)")]
         public float detectionRadius = 400f;
+        [Tooltip("Kovalama süresi (saniye, süre bitince bırakır)")]
         public float chaseTime = 2.5f;
+        [Tooltip("Hareket davranışı: Default=normal, Wild=vahşi, Mysterious=gizemli")]
         public EnemyFishAI.EnemyBehavior behavior = EnemyFishAI.EnemyBehavior.Default;
+        [Tooltip("Gizemli davranış için yüzme alanı (BG altına RectTransform koy)")]
         public RectTransform swimArea;
+        [Tooltip("Açıksa kendinden düşük level balıkları avlar")]
         public bool canEatLowerLevel;
+        [Tooltip("Bu balığın görünmesi için oyuncunun ulaşması gereken minimum level")]
+        public int requiredPlayerLevel = 1;
+        [Tooltip("Bu balıktan kaç tane spawn olacak")]
+        public int spawnCount = 5;
     }
 
     private static readonly int SpeedHash = Animator.StringToHash("Speed");
@@ -96,6 +159,9 @@ public class GameManager : MonoBehaviour
     private int playerLevel = 1;
     private int currentXP;
 
+    // Combo
+    private List<float> recentKillTimes = new List<float>();
+
     private List<EnemyFishAI> enemies = new List<EnemyFishAI>();
     private Transform enemyContainer;
     private RenderTexture fishRT;
@@ -105,6 +171,7 @@ public class GameManager : MonoBehaviour
 
     private Vector2 enemyBoundsMin;
     private Vector2 enemyBoundsMax;
+    private HashSet<int> spawnedConfigIndices = new HashSet<int>();
     private TextMeshProUGUI playerLvText;
     private Transform playerLvTextCanvas;
     private float origPlayerLvTextLocalX;
@@ -559,11 +626,18 @@ public class GameManager : MonoBehaviour
             enemyContainer.localScale = Vector3.one * 0.1f;
         }
 
-        foreach (var cfg in enemySpawnConfigs)
+        for (int cfgIdx = 0; cfgIdx < enemySpawnConfigs.Count; cfgIdx++)
         {
-            if (cfg.prefab == null) continue;
+            if (spawnedConfigIndices.Contains(cfgIdx)) continue;
 
-            for (int i = 0; i < cfg.count; i++)
+            var cfg = enemySpawnConfigs[cfgIdx];
+            if (cfg.prefab == null) continue;
+            if (playerLevel < cfg.requiredPlayerLevel) continue;
+
+            spawnedConfigIndices.Add(cfgIdx);
+
+            int total = cfg.spawnCount > 0 ? cfg.spawnCount : cfg.count;
+            for (int i = 0; i < total; i++)
             {
                 Vector2 pos = RandomSpawnPosition();
                 GameObject go = Instantiate(cfg.prefab, enemyContainer);
@@ -655,6 +729,7 @@ public class GameManager : MonoBehaviour
 
         currentXP += enemy.xp;
         UpdatePlayerLevelText();
+        TrackCombo();
 
         enemy.gameObject.SetActive(false);
         StartCoroutine(RespawnEnemy(enemy));
@@ -676,6 +751,7 @@ public class GameManager : MonoBehaviour
             playerLevel++;
             UpdatePlayerScale();
             UpdatePlayerLevelText();
+            SpawnEnemies();
         }
     }
 
@@ -930,6 +1006,76 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.Save();
 
         SceneManager.LoadScene("MainmenuScene");
+    }
+
+    #endregion
+
+    #region Combo
+
+    private void TrackCombo()
+    {
+        float now = Time.time;
+        recentKillTimes.Add(now);
+        recentKillTimes.RemoveAll(t => now - t > comboTimeWindow);
+
+        if (recentKillTimes.Count >= comboKillCount)
+        {
+            recentKillTimes.Clear();
+            SpawnComboText();
+        }
+    }
+
+    private void SpawnComboText()
+    {
+        if (comboTextPrefab == null || comboTextSpawnPoint == null) return;
+        if (comboMessages == null || comboMessages.Count == 0) return;
+
+        GameObject go = Instantiate(comboTextPrefab, comboTextSpawnPoint);
+        var tmp = go.GetComponentInChildren<TextMeshProUGUI>();
+        if (tmp != null)
+            tmp.text = comboMessages[Random.Range(0, comboMessages.Count)];
+
+        StartCoroutine(AnimateComboText(go.GetComponent<RectTransform>()));
+    }
+
+    private IEnumerator AnimateComboText(RectTransform rt)
+    {
+        if (rt == null) yield break;
+
+        rt.localScale = Vector3.zero;
+        float t = 0f;
+
+        while (t < 0.15f)
+        {
+            t += Time.deltaTime;
+            float s = Mathf.Lerp(0f, 1.3f, t / 0.15f);
+            rt.localScale = Vector3.one * s;
+            yield return null;
+        }
+
+        t = 0f;
+        while (t < 0.1f)
+        {
+            t += Time.deltaTime;
+            float s = Mathf.Lerp(1.3f, 1f, t / 0.1f);
+            rt.localScale = Vector3.one * s;
+            yield return null;
+        }
+
+        rt.localScale = Vector3.one;
+        yield return new WaitForSeconds(0.8f);
+
+        t = 0f;
+        while (t < 0.2f)
+        {
+            t += Time.deltaTime;
+            float s = Mathf.Lerp(1f, 0f, t / 0.2f);
+            rt.localScale = Vector3.one * s;
+            yield return null;
+        }
+
+        if (rt != null)
+            Destroy(rt.gameObject);
     }
 
     #endregion

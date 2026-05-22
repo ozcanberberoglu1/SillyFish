@@ -5564,9 +5564,9 @@ MonoBehaviour:
   boostMinIdleTime: 0
   boostMaxIdleTime: 0.5
   kirlerParent: {fileID: 1665803066}
-  dirtSpawnInterval: 50
+  dirtSpawnInterval: 20
   dirtMaxAlpha: 0.5
-  dirtFadeInDuration: 2
+  dirtFadeInDuration: 1.5
   playButton: {fileID: 375608041}
   cavePoint: {fileID: 1799566574}
   caveSwimSpeed: 300
