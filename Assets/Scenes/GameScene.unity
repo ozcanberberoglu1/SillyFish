@@ -2071,7 +2071,7 @@ MonoBehaviour:
   maxFoodCount: 13
   foodScale: 1
   eatDistance: 80
-  eatAnimDuration: 0.8
+  eatAnimDuration: 0.2
   baseScale: 0.8
   scalePerLevel: 0.05
   baseXPMultiplier: 10
