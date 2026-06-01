@@ -301,7 +301,81 @@ public class MainmenuManager : MonoBehaviour
             dirtObjects.Add(dirt);
         }
 
+        LoadDirtState();
         StartCoroutine(DirtSpawnRoutine());
+    }
+
+    private void LoadDirtState()
+    {
+        int savedCount = PlayerPrefs.GetInt("DirtCount", 0);
+
+        for (int i = 0; i < savedCount && i < dirtObjects.Count; i++)
+        {
+            float alpha = PlayerPrefs.GetFloat($"DirtAlpha_{i}", 0f);
+            if (alpha > 0f)
+            {
+                var dirt = dirtObjects[i];
+                dirt.SetActive(true);
+                var image = dirt.GetComponent<Image>();
+                if (image != null)
+                {
+                    var c = image.color;
+                    c.a = alpha;
+                    image.color = c;
+                }
+            }
+        }
+
+        float lastLeaveTime = PlayerPrefs.GetFloat("DirtLeaveTime", 0f);
+        if (lastLeaveTime > 0f)
+        {
+            float awaySeconds = Time.realtimeSinceStartup;
+            float savedRealTime = PlayerPrefs.GetFloat("DirtLeaveRealTime", 0f);
+            float systemAwaySeconds = (float)(System.DateTime.UtcNow - System.DateTime.FromBinary(
+                long.Parse(PlayerPrefs.GetString("DirtLeaveUtc", System.DateTime.UtcNow.ToBinary().ToString()))
+            )).TotalSeconds;
+
+            if (systemAwaySeconds > 0f)
+            {
+                int dirtsToOpen = Mathf.FloorToInt(systemAwaySeconds / dirtSpawnInterval);
+                var inactiveDirts = dirtObjects.FindAll(d => !d.activeSelf);
+
+                for (int i = 0; i < dirtsToOpen && inactiveDirts.Count > 0; i++)
+                {
+                    int idx = Random.Range(0, inactiveDirts.Count);
+                    var dirt = inactiveDirts[idx];
+                    dirt.SetActive(true);
+                    var image = dirt.GetComponent<Image>();
+                    if (image != null)
+                    {
+                        var c = image.color;
+                        c.a = dirtMaxAlpha;
+                        image.color = c;
+                    }
+                    inactiveDirts.RemoveAt(idx);
+                }
+            }
+        }
+    }
+
+    public void SaveDirtState()
+    {
+        PlayerPrefs.SetInt("DirtCount", dirtObjects.Count);
+        for (int i = 0; i < dirtObjects.Count; i++)
+        {
+            float alpha = 0f;
+            if (dirtObjects[i].activeSelf)
+            {
+                var image = dirtObjects[i].GetComponent<Image>();
+                if (image != null)
+                    alpha = image.color.a;
+            }
+            PlayerPrefs.SetFloat($"DirtAlpha_{i}", alpha);
+        }
+        PlayerPrefs.SetFloat("DirtLeaveTime", Time.time);
+        PlayerPrefs.SetFloat("DirtLeaveRealTime", Time.realtimeSinceStartup);
+        PlayerPrefs.SetString("DirtLeaveUtc", System.DateTime.UtcNow.ToBinary().ToString());
+        PlayerPrefs.Save();
     }
 
     private IEnumerator DirtSpawnRoutine()
@@ -440,7 +514,10 @@ public class MainmenuManager : MonoBehaviour
             image.color = c;
 
             if (c.a <= 0f)
+            {
                 dirt.SetActive(false);
+                SaveDirtState();
+            }
         }
     }
 
@@ -822,6 +899,7 @@ public class MainmenuManager : MonoBehaviour
     {
         if (cavePoint == null || fishRect == null)
         {
+            SaveDirtState();
             SceneManager.LoadScene("GameScene");
             yield break;
         }
@@ -846,6 +924,7 @@ public class MainmenuManager : MonoBehaviour
 
             if (Vector2.Distance(fishRect.anchoredPosition, targetPos) < arrivalThreshold)
             {
+                SaveDirtState();
                 SceneManager.LoadScene("GameScene");
                 yield break;
             }
@@ -905,4 +984,14 @@ public class MainmenuManager : MonoBehaviour
     }
 
     #endregion
+
+    private void OnApplicationPause(bool paused)
+    {
+        if (paused) SaveDirtState();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveDirtState();
+    }
 }
