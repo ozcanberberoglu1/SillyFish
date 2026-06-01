@@ -313,6 +313,7 @@ public class EnemyFishAI : MonoBehaviour
     private bool FleeFromPredator()
     {
         if (currentState == FishState.Hunting) return false;
+        if (gm.IsMagnetActive() && level <= gm.GetPlayerLevel()) return false;
 
         var allEnemies = gm.GetEnemies();
         foreach (var other in allEnemies)
