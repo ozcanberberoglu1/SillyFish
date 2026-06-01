@@ -192,6 +192,12 @@ public class GameManager : MonoBehaviour
     private List<SkillConfig> activeSkillConfigs = new List<SkillConfig>();
     private bool shieldActive;
     private bool magnetActive;
+    private Coroutine shieldCoroutine;
+    private Coroutine magnetCoroutine;
+    private float shieldTimeRemaining;
+    private float magnetTimeRemaining;
+    private float shieldDuration;
+    private float magnetDuration;
     private GameObject shieldObj;
     private GameObject healthPlusObj;
     private GameObject magnetIconObj;
@@ -1243,18 +1249,26 @@ public class GameManager : MonoBehaviour
         switch (type)
         {
             case SkillType.Shield:
-                StartCoroutine(ShieldRoutine(cfg.duration));
+                if (shieldCoroutine != null)
+                    StopCoroutine(shieldCoroutine);
+                shieldDuration = cfg.duration;
+                shieldTimeRemaining = cfg.duration;
+                shieldCoroutine = StartCoroutine(ShieldRoutine());
                 break;
             case SkillType.Health:
                 ApplyHealthSkill();
                 break;
             case SkillType.Magnet:
-                StartCoroutine(MagnetRoutine(cfg.duration));
+                if (magnetCoroutine != null)
+                    StopCoroutine(magnetCoroutine);
+                magnetDuration = cfg.duration;
+                magnetTimeRemaining = cfg.duration;
+                magnetCoroutine = StartCoroutine(MagnetRoutine());
                 break;
         }
     }
 
-    private IEnumerator ShieldRoutine(float duration)
+    private IEnumerator ShieldRoutine()
     {
         shieldActive = true;
         if (shieldObj != null) shieldObj.SetActive(true);
@@ -1271,16 +1285,16 @@ public class GameManager : MonoBehaviour
         if (shieldSliderParent != null) shieldSliderParent.SetActive(true);
         if (shieldSliderFill != null) shieldSliderFill.fillAmount = 1f;
 
-        float elapsed = 0f;
-        while (elapsed < duration)
+        while (shieldTimeRemaining > 0f)
         {
-            elapsed += Time.deltaTime;
+            shieldTimeRemaining -= Time.deltaTime;
             if (shieldSliderFill != null)
-                shieldSliderFill.fillAmount = 1f - (elapsed / duration);
+                shieldSliderFill.fillAmount = shieldTimeRemaining / shieldDuration;
             yield return null;
         }
 
         shieldActive = false;
+        shieldCoroutine = null;
         if (shieldObj != null) shieldObj.SetActive(false);
         if (shieldSliderParent != null) shieldSliderParent.SetActive(false);
     }
@@ -1304,23 +1318,23 @@ public class GameManager : MonoBehaviour
         if (healthPlusObj != null) healthPlusObj.SetActive(false);
     }
 
-    private IEnumerator MagnetRoutine(float duration)
+    private IEnumerator MagnetRoutine()
     {
         magnetActive = true;
         if (magnetIconObj != null) magnetIconObj.SetActive(true);
         if (magnetSliderParent != null) magnetSliderParent.SetActive(true);
         if (magnetSliderFill != null) magnetSliderFill.fillAmount = 1f;
 
-        float elapsed = 0f;
-        while (elapsed < duration)
+        while (magnetTimeRemaining > 0f)
         {
-            elapsed += Time.deltaTime;
+            magnetTimeRemaining -= Time.deltaTime;
             if (magnetSliderFill != null)
-                magnetSliderFill.fillAmount = 1f - (elapsed / duration);
+                magnetSliderFill.fillAmount = magnetTimeRemaining / magnetDuration;
             yield return null;
         }
 
         magnetActive = false;
+        magnetCoroutine = null;
         if (magnetIconObj != null) magnetIconObj.SetActive(false);
         if (magnetSliderParent != null) magnetSliderParent.SetActive(false);
     }
