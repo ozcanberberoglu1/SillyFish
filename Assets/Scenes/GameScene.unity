@@ -2143,7 +2143,7 @@ MonoBehaviour:
     spawnCount: 14
   - prefab: {fileID: 6836182319577743249, guid: 5ea429e4eac284a92879e45ff34796d2, type: 3}
     level: 6
-    xp: 3
+    xp: 4
     count: 2
     speed: 120
     detectionRadius: 300
@@ -2155,7 +2155,7 @@ MonoBehaviour:
     spawnCount: 19
   - prefab: {fileID: 6836182319577743249, guid: 128e527c5b6db4e6f95821269ac1bcf4, type: 3}
     level: 10
-    xp: 3
+    xp: 6
     count: 2
     speed: 70
     detectionRadius: 200
@@ -2167,7 +2167,7 @@ MonoBehaviour:
     spawnCount: 14
   - prefab: {fileID: 6836182319577743249, guid: 346c86278ec7b4b2db1eac71919fb06c, type: 3}
     level: 25
-    xp: 1
+    xp: 13
     count: 2
     speed: 120
     detectionRadius: 700
@@ -2179,7 +2179,7 @@ MonoBehaviour:
     spawnCount: 5
   - prefab: {fileID: 6836182319577743249, guid: 1fb8dfa672dce41549b6a185edd3ecd7, type: 3}
     level: 30
-    xp: 3
+    xp: 15
     count: 2
     speed: 150
     detectionRadius: 700
@@ -2191,7 +2191,7 @@ MonoBehaviour:
     spawnCount: 5
   - prefab: {fileID: 6836182319577743249, guid: 06ea9e081b85b4fca962a946c1989d7e, type: 3}
     level: 159
-    xp: 3
+    xp: 70
     count: 2
     speed: 200
     detectionRadius: 700
@@ -2203,7 +2203,7 @@ MonoBehaviour:
     spawnCount: 1
   - prefab: {fileID: 6836182319577743249, guid: a0fdcf7c05c464675b76a05f309a61d2, type: 3}
     level: 220
-    xp: 3
+    xp: 100
     count: 2
     speed: 350
     detectionRadius: 400
@@ -2215,7 +2215,7 @@ MonoBehaviour:
     spawnCount: 1
   - prefab: {fileID: 6836182319577743249, guid: 68260abe4d86c418d8fdad1b370de9f5, type: 3}
     level: 99
-    xp: 3
+    xp: 50
     count: 2
     speed: 80
     detectionRadius: 300
