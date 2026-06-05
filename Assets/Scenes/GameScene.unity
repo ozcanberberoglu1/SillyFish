@@ -2567,6 +2567,7 @@ GameObject:
   - component: {fileID: 1563214744}
   - component: {fileID: 1563214743}
   - component: {fileID: 1563214742}
+  - component: {fileID: 1563214745}
   m_Layer: 5
   m_Name: Chains
   m_TagString: Untagged
@@ -2656,6 +2657,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1563214740}
   m_CullTransparentMesh: 1
+--- !u!114 &1563214745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1563214740}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b2455353e48142338233094e4f6a20c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  waveAmplitude: 8
+  waveSpeed: 1.5
+  phaseOffset: 0.6
+  rotationAmount: 2
 --- !u!1 &1651596279
 GameObject:
   m_ObjectHideFlags: 0
@@ -3059,7 +3076,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0}
   m_AnchorMax: {x: 0.5, y: 0}
-  m_AnchoredPosition: {x: -720, y: 1299.325}
+  m_AnchoredPosition: {x: -802, y: 1388}
   m_SizeDelta: {x: 322.6308, y: 232.5189}
   m_Pivot: {x: 0.5, y: 0}
 --- !u!114 &1841779490
@@ -3478,7 +3495,6 @@ MonoBehaviour:
     spawnCount: 2
     respawnTime: 20
     duration: 10
-  tutorialPanel: {fileID: 0}
   comboTextPrefab: {fileID: 7849027293160399152, guid: 4d5ffbe15533a4a9f978d7c80c72fc03, type: 3}
   comboTextSpawnPoint: {fileID: 40530520}
   comboTimeWindow: 3
