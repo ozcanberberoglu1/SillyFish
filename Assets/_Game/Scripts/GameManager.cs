@@ -107,6 +107,18 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float skillPickupDistance = 80f;
     [SerializeField] private List<SkillConfig> skillConfigs = new List<SkillConfig>();
 
+    [Header("Dark Deep")]
+    [Tooltip("DarkDeep kilidi açılma leveli")]
+    [SerializeField] private int darkDeepUnlockLevel = 25;
+    [Tooltip("DarkDeep kilit popup alanı (temas edince kilit gösterilir)")]
+    [SerializeField] private RectTransform darkDeepLockPopupArea;
+    [Tooltip("Balığın üzerindeki kilit görseli")]
+    [SerializeField] private GameObject darkDeepLockObj;
+    [Tooltip("Zincir objesi (level'e ulaşınca kapatılır)")]
+    [SerializeField] private GameObject chainsObj;
+    [Tooltip("DarkDeep arkaplan (level'e ulaşınca açılır)")]
+    [SerializeField] private RectTransform darkDeepBGRect;
+
     [Header("Combo")]
     [Tooltip("ComboText prefab'ı (TextMeshProUGUI içermeli)")]
     [SerializeField] private GameObject comboTextPrefab;
@@ -224,6 +236,7 @@ public class GameManager : MonoBehaviour
     private int currentHP;
     private bool isInvincible;
     private bool isDead;
+    private bool darkDeepUnlocked;
     private bool usedSecondChance;
     private int entryLevel;
     private Image healthFillImage;
@@ -282,6 +295,7 @@ public class GameManager : MonoBehaviour
         UpdatePlayerScale();
         UpdatePlayerLevelText();
         MoveToSpawnPoint();
+        SetupDarkDeep();
 
         PlayerPrefs.DeleteKey("DeathLevel");
         PlayerPrefs.SetInt("EntryLevel", playerLevel);
@@ -528,6 +542,7 @@ public class GameManager : MonoBehaviour
         SyncEnemyWorldPositions();
         CheckEnemyInteractions();
         CheckPortal();
+        CheckDarkDeepLock();
     }
 
     private void UpdateWorldPosition()
@@ -547,11 +562,22 @@ public class GameManager : MonoBehaviour
         float halfBGW = bgRect.sizeDelta.x * 0.5f;
         float halfBGH = bgRect.sizeDelta.y * 0.5f;
 
+        float bgTopY = bgStartPos.y + halfBGH;
+        float bgBottomY = bgStartPos.y - halfBGH;
+
+        if (darkDeepUnlocked && darkDeepBGRect != null)
+        {
+            float deepHalfH = darkDeepBGRect.sizeDelta.y * 0.5f;
+            float deepBottomY = darkDeepBGRect.anchoredPosition.y - deepHalfH;
+            bgBottomY = deepBottomY;
+        }
+
         float maxX = halfBGW - halfScreenW;
-        float maxY = halfBGH - halfScreenH;
+        float maxUp = bgTopY - halfScreenH - bgStartPos.y;
+        float maxDown = bgStartPos.y - bgBottomY - halfScreenH;
 
         worldPosition.x = Mathf.Clamp(worldPosition.x, -maxX, maxX);
-        worldPosition.y = Mathf.Clamp(worldPosition.y, -maxY, maxY);
+        worldPosition.y = Mathf.Clamp(worldPosition.y, -maxDown, maxUp);
     }
 
     private void FlipFish()
@@ -801,6 +827,7 @@ public class GameManager : MonoBehaviour
             UpdatePlayerScale();
             UpdatePlayerLevelText();
             SpawnEnemies();
+            CheckDarkDeepUnlock();
         }
     }
 
@@ -1337,6 +1364,56 @@ public class GameManager : MonoBehaviour
         magnetCoroutine = null;
         if (magnetIconObj != null) magnetIconObj.SetActive(false);
         if (magnetSliderParent != null) magnetSliderParent.SetActive(false);
+    }
+
+    #endregion
+
+    #region Dark Deep
+
+    private void SetupDarkDeep()
+    {
+        if (darkDeepLockObj != null) darkDeepLockObj.SetActive(false);
+
+        if (playerLevel >= darkDeepUnlockLevel)
+        {
+            UnlockDarkDeep();
+        }
+        else
+        {
+            if (darkDeepBGRect != null) darkDeepBGRect.gameObject.SetActive(false);
+        }
+    }
+
+    private void CheckDarkDeepUnlock()
+    {
+        if (darkDeepUnlocked) return;
+        if (playerLevel < darkDeepUnlockLevel) return;
+        UnlockDarkDeep();
+    }
+
+    private void UnlockDarkDeep()
+    {
+        darkDeepUnlocked = true;
+        if (chainsObj != null) chainsObj.SetActive(false);
+        if (darkDeepLockPopupArea != null) darkDeepLockPopupArea.gameObject.SetActive(false);
+        if (darkDeepLockObj != null) darkDeepLockObj.SetActive(false);
+        if (darkDeepBGRect != null) darkDeepBGRect.gameObject.SetActive(true);
+    }
+
+    private void CheckDarkDeepLock()
+    {
+        if (darkDeepUnlocked || darkDeepLockPopupArea == null || darkDeepLockObj == null) return;
+
+        Vector3 localInBG = bgRect.InverseTransformPoint(darkDeepLockPopupArea.position);
+        Vector2 areaPos = new Vector2(localInBG.x, localInBG.y);
+        Vector2 areaHalfSize = darkDeepLockPopupArea.sizeDelta * 0.5f;
+
+        bool inside = worldPosition.x >= areaPos.x - areaHalfSize.x &&
+                      worldPosition.x <= areaPos.x + areaHalfSize.x &&
+                      worldPosition.y >= areaPos.y - areaHalfSize.y &&
+                      worldPosition.y <= areaPos.y + areaHalfSize.y;
+
+        darkDeepLockObj.SetActive(inside);
     }
 
     #endregion
