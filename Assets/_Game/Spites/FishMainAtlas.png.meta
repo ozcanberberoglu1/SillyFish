@@ -18212,6 +18212,72 @@ TextureImporter:
         'boneIndex[1]': 0
         'boneIndex[2]': 0
         'boneIndex[3]': 0
+    - serializedVersion: 2
+      name: FishMainAtlas_34
+      rect:
+        serializedVersion: 2
+        x: 1145
+        y: 133
+        width: 172
+        height: 61
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 3996e746728ca49029b1aa2d2e233c09
+      internalID: -555783432
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_35
+      rect:
+        serializedVersion: 2
+        x: 1322
+        y: 136
+        width: 44
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 67c426ac9533944509b7756be03952c0
+      internalID: 2123692769
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_36
+      rect:
+        serializedVersion: 2
+        x: 1140
+        y: 0
+        width: 230
+        height: 130
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 217f08d64355d4caea1e85e03dc82a60
+      internalID: -12988133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -18254,6 +18320,9 @@ TextureImporter:
       FishMainAtlas_31: -823733527
       FishMainAtlas_32: 372848548
       FishMainAtlas_33: 675812760
+      FishMainAtlas_34: -555783432
+      FishMainAtlas_35: 2123692769
+      FishMainAtlas_36: -12988133
       FishMainAtlas_4: -2643217370905581124
       FishMainAtlas_5: -2183807536646474854
       FishMainAtlas_6: -794198111

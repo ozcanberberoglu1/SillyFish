@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: d7fcffbe4ceed426c8a542451b21ef1a
+guid: d11fa257764e940d2b22e5347706f063
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4720805474219074364
-    second: bgOCEAN_0
+      213: -4213596111665863521
+    second: GameBG2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -126,23 +126,23 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bgOCEAN_0
+      name: GameBG2_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1668
-        height: 943
+        width: 7668
+        height: 4626
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c332c80219ba38140800000000000000
-      internalID: 4720805474219074364
+      spriteID: f94603939ac4685c0800000000000000
+      internalID: -4213596111665863521
       vertices: []
       indices: 
       edges: []
@@ -151,7 +151,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -161,7 +161,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      bgOCEAN_0: 4720805474219074364
+      GameBG2_0: -4213596111665863521
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
