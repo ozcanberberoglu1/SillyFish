@@ -1,0 +1,611 @@
+fileFormatVersion: 2
+guid: 9b46968e96e304b9ba23680004d3935d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -7106575525255154360
+    second: fishsAtlas2_0
+  - first:
+      213: -1374463453996767934
+    second: fishsAtlas2_1
+  - first:
+      213: -8623163609477883593
+    second: fishsAtlas2_2
+  - first:
+      213: -4082268225831166647
+    second: fishsAtlas2_3
+  - first:
+      213: 6897260099201668595
+    second: fishsAtlas2_4
+  - first:
+      213: -1935621939293231241
+    second: fishsAtlas2_5
+  - first:
+      213: -7486049753602609331
+    second: fishsAtlas2_6
+  - first:
+      213: 1935372765007983529
+    second: fishsAtlas2_7
+  - first:
+      213: 5466105852882384351
+    second: fishsAtlas2_8
+  - first:
+      213: -2889949653522276570
+    second: fishsAtlas2_9
+  - first:
+      213: -5170794548094499282
+    second: fishsAtlas2_10
+  - first:
+      213: 7872097183054273290
+    second: fishsAtlas2_11
+  - first:
+      213: -6893663119951349507
+    second: fishsAtlas2_12
+  - first:
+      213: 1033153674010028104
+    second: fishsAtlas2_13
+  - first:
+      213: -76244898261611092
+    second: fishsAtlas2_14
+  - first:
+      213: 894171805728919722
+    second: fishsAtlas2_15
+  - first:
+      213: 7300077173288021361
+    second: fishsAtlas2_16
+  - first:
+      213: 6174193108336705701
+    second: fishsAtlas2_17
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: fishsAtlas2_0
+      rect:
+        serializedVersion: 2
+        x: 21
+        y: 1758
+        width: 371
+        height: 259
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8457ea7463f506d90800000000000000
+      internalID: -7106575525255154360
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_1
+      rect:
+        serializedVersion: 2
+        x: 41
+        y: 1510
+        width: 355
+        height: 203
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 24524c355ccecece0800000000000000
+      internalID: -1374463453996767934
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_2
+      rect:
+        serializedVersion: 2
+        x: 415
+        y: 1488
+        width: 331
+        height: 233
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 739def8726e545880800000000000000
+      internalID: -8623163609477883593
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_3
+      rect:
+        serializedVersion: 2
+        x: 400
+        y: 1740
+        width: 340
+        height: 283
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 94d18796daed857c0800000000000000
+      internalID: -4082268225831166647
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_4
+      rect:
+        serializedVersion: 2
+        x: 753
+        y: 1501
+        width: 379
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3f51468548df7bf50800000000000000
+      internalID: 6897260099201668595
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_5
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 1733
+        width: 369
+        height: 290
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 77769f00a1a4325e0800000000000000
+      internalID: -1935621939293231241
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_6
+      rect:
+        serializedVersion: 2
+        x: 1149
+        y: 1732
+        width: 364
+        height: 288
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: d4fad9179653c1890800000000000000
+      internalID: -7486049753602609331
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_7
+      rect:
+        serializedVersion: 2
+        x: 1159
+        y: 1479
+        width: 355
+        height: 236
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9a334469643dbda10800000000000000
+      internalID: 1935372765007983529
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_8
+      rect:
+        serializedVersion: 2
+        x: 11
+        y: 1277
+        width: 387
+        height: 196
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fd5fcb100528bdb40800000000000000
+      internalID: 5466105852882384351
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_9
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 1016
+        width: 344
+        height: 217
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 62f9a0b0a16d4e7d0800000000000000
+      internalID: -2889949653522276570
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_10
+      rect:
+        serializedVersion: 2
+        x: 418
+        y: 1003
+        width: 327
+        height: 238
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e260d4a21c5ad38b0800000000000000
+      internalID: -5170794548094499282
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_11
+      rect:
+        serializedVersion: 2
+        x: 420
+        y: 1254
+        width: 323
+        height: 223
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a0b9d490eae4f3d60800000000000000
+      internalID: 7872097183054273290
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_12
+      rect:
+        serializedVersion: 2
+        x: 765
+        y: 1256
+        width: 355
+        height: 213
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df8b616aae9c450a0800000000000000
+      internalID: -6893663119951349507
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_13
+      rect:
+        serializedVersion: 2
+        x: 1201
+        y: 1240
+        width: 311
+        height: 232
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 848e1c9eacf765e00800000000000000
+      internalID: 1033153674010028104
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_14
+      rect:
+        serializedVersion: 2
+        x: 27
+        y: 750
+        width: 356
+        height: 235
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: cad4e234baf11fef0800000000000000
+      internalID: -76244898261611092
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_15
+      rect:
+        serializedVersion: 2
+        x: 407
+        y: 740
+        width: 331
+        height: 250
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aa054a0158cb86c00800000000000000
+      internalID: 894171805728919722
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_16
+      rect:
+        serializedVersion: 2
+        x: 412
+        y: 412
+        width: 310
+        height: 320
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 17d25caf2851f4560800000000000000
+      internalID: 7300077173288021361
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: fishsAtlas2_17
+      rect:
+        serializedVersion: 2
+        x: 40
+        y: 406
+        width: 343
+        height: 324
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5a003157be32fa550800000000000000
+      internalID: 6174193108336705701
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 206c764c87a504aba88d681b5c322e9f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      fishsAtlas2_0: -7106575525255154360
+      fishsAtlas2_1: -1374463453996767934
+      fishsAtlas2_10: -5170794548094499282
+      fishsAtlas2_11: 7872097183054273290
+      fishsAtlas2_12: -6893663119951349507
+      fishsAtlas2_13: 1033153674010028104
+      fishsAtlas2_14: -76244898261611092
+      fishsAtlas2_15: 894171805728919722
+      fishsAtlas2_16: 7300077173288021361
+      fishsAtlas2_17: 6174193108336705701
+      fishsAtlas2_2: -8623163609477883593
+      fishsAtlas2_3: -4082268225831166647
+      fishsAtlas2_4: 6897260099201668595
+      fishsAtlas2_5: -1935621939293231241
+      fishsAtlas2_6: -7486049753602609331
+      fishsAtlas2_7: 1935372765007983529
+      fishsAtlas2_8: 5466105852882384351
+      fishsAtlas2_9: -2889949653522276570
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
