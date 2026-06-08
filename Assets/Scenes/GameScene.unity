@@ -3586,6 +3586,78 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 3
     spawnCount: 5
+  - prefab: {fileID: 6836182319577743249, guid: 2be79dc0f624849b483a91fb1708fba6, type: 3}
+    level: 8
+    xp: 7
+    count: 2
+    speed: 80
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 1
+    requiredPlayerLevel: 7
+    spawnCount: 8
+  - prefab: {fileID: 6836182319577743249, guid: 2be79dc0f624849b483a91fb1708fba6, type: 3}
+    level: 8
+    xp: 7
+    count: 2
+    speed: 200
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 0
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 1
+    requiredPlayerLevel: 7
+    spawnCount: 8
+  - prefab: {fileID: 6836182319577743249, guid: 6fa5b81911d934dcabb15dd8f333606a, type: 3}
+    level: 13
+    xp: 10
+    count: 2
+    speed: 140
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 1
+    requiredPlayerLevel: 10
+    spawnCount: 6
+  - prefab: {fileID: 6836182319577743249, guid: ce8dd05d98e0b4712900b12954bdec78, type: 3}
+    level: 17
+    xp: 14
+    count: 2
+    speed: 170
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 0
+    requiredPlayerLevel: 15
+    spawnCount: 7
+  - prefab: {fileID: 6836182319577743249, guid: c7a99d8eaedfa4c878ae0035397bd0ec, type: 3}
+    level: 21
+    xp: 17
+    count: 2
+    speed: 200
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 1
+    requiredPlayerLevel: 19
+    spawnCount: 8
+  - prefab: {fileID: 6836182319577743249, guid: 28d42d539a33d4a3ca9b084244cf1bc1, type: 3}
+    level: 37
+    xp: 17
+    count: 2
+    speed: 200
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 1
+    requiredPlayerLevel: 30
+    spawnCount: 8
   portalSpawnPoint: {fileID: 1413977235}
   portalNextPoint: {fileID: 211194731}
   portalEnterDistance: 100
