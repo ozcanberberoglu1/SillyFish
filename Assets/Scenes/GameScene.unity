@@ -663,7 +663,8 @@ RectTransform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1916506767}
   m_Father: {fileID: 1817258770}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -3234,6 +3235,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841779488}
   m_CullTransparentMesh: 1
+--- !u!1 &1916506766
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1916506767}
+  m_Layer: 5
+  m_Name: DarkFishArea
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!224 &1916506767
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1916506766}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 386101554}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -236.71}
+  m_SizeDelta: {x: 10000, y: 6540.5}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1936258824
 GameObject:
   m_ObjectHideFlags: 0
@@ -3454,6 +3490,7 @@ MonoBehaviour:
     canEatLowerLevel: 0
     requiredPlayerLevel: 1
     spawnCount: 25
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 3487c8e15b1104fde96983550e297683, type: 3}
     level: 2
     xp: 2
@@ -3466,6 +3503,7 @@ MonoBehaviour:
     canEatLowerLevel: 0
     requiredPlayerLevel: 1
     spawnCount: 5
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: e48109ca3c3da4856a141e6acf0b9545, type: 3}
     level: 3
     xp: 3
@@ -3478,6 +3516,7 @@ MonoBehaviour:
     canEatLowerLevel: 0
     requiredPlayerLevel: 2
     spawnCount: 9
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: bbb0ccadd036043e285805e64481e0cf, type: 3}
     level: 4
     xp: 3
@@ -3490,6 +3529,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 1
     spawnCount: 12
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: f74d75d4de76a4886a0832dcef37c9cb, type: 3}
     level: 5
     xp: 3
@@ -3502,6 +3542,7 @@ MonoBehaviour:
     canEatLowerLevel: 0
     requiredPlayerLevel: 4
     spawnCount: 14
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 5ea429e4eac284a92879e45ff34796d2, type: 3}
     level: 6
     xp: 4
@@ -3514,6 +3555,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 4
     spawnCount: 19
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 128e527c5b6db4e6f95821269ac1bcf4, type: 3}
     level: 10
     xp: 6
@@ -3526,6 +3568,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 5
     spawnCount: 14
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 346c86278ec7b4b2db1eac71919fb06c, type: 3}
     level: 25
     xp: 13
@@ -3538,6 +3581,7 @@ MonoBehaviour:
     canEatLowerLevel: 0
     requiredPlayerLevel: 1
     spawnCount: 5
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 1fb8dfa672dce41549b6a185edd3ecd7, type: 3}
     level: 30
     xp: 15
@@ -3550,6 +3594,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 12
     spawnCount: 5
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 06ea9e081b85b4fca962a946c1989d7e, type: 3}
     level: 159
     xp: 70
@@ -3562,6 +3607,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 3
     spawnCount: 1
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: a0fdcf7c05c464675b76a05f309a61d2, type: 3}
     level: 220
     xp: 100
@@ -3574,6 +3620,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 10
     spawnCount: 1
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 68260abe4d86c418d8fdad1b370de9f5, type: 3}
     level: 99
     xp: 50
@@ -3586,6 +3633,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 3
     spawnCount: 5
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 2be79dc0f624849b483a91fb1708fba6, type: 3}
     level: 8
     xp: 7
@@ -3598,6 +3646,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 7
     spawnCount: 8
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 2be79dc0f624849b483a91fb1708fba6, type: 3}
     level: 8
     xp: 7
@@ -3610,6 +3659,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 7
     spawnCount: 8
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 6fa5b81911d934dcabb15dd8f333606a, type: 3}
     level: 13
     xp: 10
@@ -3622,6 +3672,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 10
     spawnCount: 6
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: ce8dd05d98e0b4712900b12954bdec78, type: 3}
     level: 17
     xp: 14
@@ -3634,6 +3685,7 @@ MonoBehaviour:
     canEatLowerLevel: 0
     requiredPlayerLevel: 15
     spawnCount: 7
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: c7a99d8eaedfa4c878ae0035397bd0ec, type: 3}
     level: 21
     xp: 17
@@ -3646,6 +3698,7 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 19
     spawnCount: 8
+    isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 28d42d539a33d4a3ca9b084244cf1bc1, type: 3}
     level: 37
     xp: 17
@@ -3658,6 +3711,20 @@ MonoBehaviour:
     canEatLowerLevel: 1
     requiredPlayerLevel: 30
     spawnCount: 8
+    isDarkFish: 0
+  - prefab: {fileID: 6836182319577743249, guid: fc42300ba6ac24bbab2eb5c2f7de5c50, type: 3}
+    level: 40
+    xp: 19
+    count: 2
+    speed: 230
+    detectionRadius: 300
+    chaseTime: 2.5
+    behavior: 1
+    swimArea: {fileID: 0}
+    canEatLowerLevel: 1
+    requiredPlayerLevel: 33
+    spawnCount: 7
+    isDarkFish: 1
   portalSpawnPoint: {fileID: 1413977235}
   portalNextPoint: {fileID: 211194731}
   portalEnterDistance: 100
@@ -3684,11 +3751,12 @@ MonoBehaviour:
     spawnCount: 2
     respawnTime: 20
     duration: 10
-  darkDeepUnlockLevel: 25
+  darkDeepUnlockLevel: 15
   darkDeepLockPopupArea: {fileID: 176095497}
   darkDeepLockObj: {fileID: 821942311}
   chainsObj: {fileID: 1563214740}
   darkDeepBGRect: {fileID: 386101554}
+  darkFishArea: {fileID: 1916506767}
   comboTextPrefab: {fileID: 7849027293160399152, guid: 4d5ffbe15533a4a9f978d7c80c72fc03, type: 3}
   comboTextSpawnPoint: {fileID: 40530520}
   comboTimeWindow: 3

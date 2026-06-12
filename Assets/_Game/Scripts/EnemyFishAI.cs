@@ -21,6 +21,7 @@ public class EnemyFishAI : MonoBehaviour
     [HideInInspector] public Vector2 canvasPosition;
     [HideInInspector] public EnemyBehavior behavior = EnemyBehavior.Default;
     [HideInInspector] public bool canEatLowerLevel;
+    [HideInInspector] public bool isDarkFish;
 
     private Animator anim;
     private Vector2 wanderTarget;

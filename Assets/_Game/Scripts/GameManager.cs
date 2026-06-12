@@ -118,6 +118,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameObject chainsObj;
     [Tooltip("DarkDeep arkaplan (level'e ulaşınca açılır)")]
     [SerializeField] private RectTransform darkDeepBGRect;
+    [Tooltip("DarkFish'lerin spawn olacağı alan")]
+    [SerializeField] private RectTransform darkFishArea;
 
     [Header("Combo")]
     [Tooltip("ComboText prefab'ı (TextMeshProUGUI içermeli)")]
@@ -159,6 +161,8 @@ public class GameManager : MonoBehaviour
         public int requiredPlayerLevel = 1;
         [Tooltip("Bu balıktan kaç tane spawn olacak")]
         public int spawnCount = 5;
+        [Tooltip("Açıksa bu balık DarkDeep bölgesinde spawn olur (level 25+)")]
+        public bool isDarkFish;
     }
 
     public enum SkillType { Shield, Health, Magnet }
@@ -708,13 +712,26 @@ public class GameManager : MonoBehaviour
             var cfg = enemySpawnConfigs[cfgIdx];
             if (cfg.prefab == null) continue;
             if (playerLevel < cfg.requiredPlayerLevel) continue;
+            if (cfg.isDarkFish && !darkDeepUnlocked) continue;
 
             spawnedConfigIndices.Add(cfgIdx);
+
+            Vector2 bMin = enemyBoundsMin;
+            Vector2 bMax = enemyBoundsMax;
+
+            if (cfg.isDarkFish && darkFishArea != null)
+            {
+                Vector3 localInBG = bgRect.InverseTransformPoint(darkFishArea.position);
+                Vector2 center = new Vector2(localInBG.x, localInBG.y);
+                Vector2 halfSize = darkFishArea.sizeDelta * 0.5f;
+                bMin = center - halfSize;
+                bMax = center + halfSize;
+            }
 
             int total = cfg.spawnCount > 0 ? cfg.spawnCount : cfg.count;
             for (int i = 0; i < total; i++)
             {
-                Vector2 pos = RandomSpawnPosition();
+                Vector2 pos = RandomSpawnInBounds(bMin, bMax);
                 GameObject go = Instantiate(cfg.prefab, enemyContainer);
                 SetLayerRecursive(go, 6);
 
@@ -726,7 +743,8 @@ public class GameManager : MonoBehaviour
                 ai.chaseTime = cfg.chaseTime;
                 ai.behavior = cfg.behavior;
                 ai.canEatLowerLevel = cfg.canEatLowerLevel;
-                ai.Init(this, pos, enemyBoundsMin, enemyBoundsMax);
+                ai.isDarkFish = cfg.isDarkFish;
+                ai.Init(this, pos, bMin, bMax);
 
                 if (cfg.behavior == EnemyFishAI.EnemyBehavior.Mysterious && cfg.swimArea != null)
                 {
@@ -739,6 +757,14 @@ public class GameManager : MonoBehaviour
                 enemies.Add(ai);
             }
         }
+    }
+
+    private Vector2 RandomSpawnInBounds(Vector2 bMin, Vector2 bMax)
+    {
+        float margin = 300f;
+        return new Vector2(
+            Random.Range(bMin.x + margin, bMax.x - margin),
+            Random.Range(bMin.y + margin, bMax.y - margin));
     }
 
     private Vector2 RandomSpawnPosition()
@@ -866,7 +892,19 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(Random.Range(respawnTimeMin, respawnTimeMax));
         if (enemy == null) yield break;
 
-        Vector2 newPos = RandomSpawnPosition();
+        Vector2 bMin = enemyBoundsMin;
+        Vector2 bMax = enemyBoundsMax;
+
+        if (enemy.isDarkFish && darkFishArea != null)
+        {
+            Vector3 localInBG = bgRect.InverseTransformPoint(darkFishArea.position);
+            Vector2 center = new Vector2(localInBG.x, localInBG.y);
+            Vector2 halfSize = darkFishArea.sizeDelta * 0.5f;
+            bMin = center - halfSize;
+            bMax = center + halfSize;
+        }
+
+        Vector2 newPos = enemy.isDarkFish ? RandomSpawnInBounds(bMin, bMax) : RandomSpawnPosition();
         enemy.canvasPosition = newPos;
 
         if (fishWorldTransform != null && bgRect != null)
@@ -881,7 +919,7 @@ public class GameManager : MonoBehaviour
         }
 
         enemy.gameObject.SetActive(true);
-        enemy.Respawn(newPos, enemyBoundsMin, enemyBoundsMax);
+        enemy.Respawn(newPos, bMin, bMax);
     }
 
     private void UpdatePlayerScale()
@@ -1398,6 +1436,7 @@ public class GameManager : MonoBehaviour
         if (darkDeepLockPopupArea != null) darkDeepLockPopupArea.gameObject.SetActive(false);
         if (darkDeepLockObj != null) darkDeepLockObj.SetActive(false);
         if (darkDeepBGRect != null) darkDeepBGRect.gameObject.SetActive(true);
+        SpawnEnemies();
     }
 
     private void CheckDarkDeepLock()
