@@ -120,6 +120,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private RectTransform darkDeepBGRect;
     [Tooltip("DarkFish'lerin spawn olacağı alan")]
     [SerializeField] private RectTransform darkFishArea;
+    [Tooltip("Karanlık overlay scripti")]
+    [SerializeField] private DarkDeepOverlay darkOverlay;
+    [Tooltip("Derinliğe göre karanlık artışı (0=sabit, 1=dipte tamamen karanlık)")]
+    [SerializeField] [Range(0f, 1f)] private float depthDarknessIntensity = 0.7f;
+    [Tooltip("Karanlığın başlama ofseti (0=hemen başlar, 0.3=alanın %30 aşağısında başlar)")]
+    [SerializeField] [Range(0f, 0.8f)] private float darkStartOffset = 0.3f;
+    [Tooltip("Karanlık eğrisi (1=lineer, 2+=ortası daha koyu)")]
+    [SerializeField] [Range(0.3f, 5f)] private float darkCurve = 2.5f;
 
     [Header("Combo")]
     [Tooltip("ComboText prefab'ı (TextMeshProUGUI içermeli)")]
@@ -1441,18 +1449,48 @@ public class GameManager : MonoBehaviour
 
     private void CheckDarkDeepLock()
     {
-        if (darkDeepUnlocked || darkDeepLockPopupArea == null || darkDeepLockObj == null) return;
+        if (!darkDeepUnlocked && darkDeepLockPopupArea != null && darkDeepLockObj != null)
+        {
+            bool insideLock = IsInsideArea(darkDeepLockPopupArea);
+            darkDeepLockObj.SetActive(insideLock);
+        }
 
-        Vector3 localInBG = bgRect.InverseTransformPoint(darkDeepLockPopupArea.position);
+        if (darkDeepUnlocked && darkOverlay != null && darkDeepBGRect != null)
+        {
+            Vector3 localInBG = bgRect.InverseTransformPoint(darkDeepBGRect.position);
+            float areaTop = localInBG.y + darkDeepBGRect.sizeDelta.y * 0.5f;
+            float areaBottom = localInBG.y - darkDeepBGRect.sizeDelta.y * 0.5f;
+            float totalHeight = areaTop - areaBottom;
+
+            float darkStartY = areaTop - totalHeight * darkStartOffset;
+            bool insideDark = IsInsideArea(darkDeepBGRect) && worldPosition.y <= darkStartY;
+
+            float depthRatio = 0f;
+            if (insideDark && totalHeight > 0f)
+            {
+                float darkRange = darkStartY - areaBottom;
+                float linear = Mathf.Clamp01((darkStartY - worldPosition.y) / darkRange);
+                depthRatio = Mathf.Pow(linear, 1f / darkCurve);
+            }
+            darkOverlay.SetDark(insideDark, depthRatio, depthRatio * depthDarknessIntensity);
+        }
+    }
+
+    private bool IsInsideArea(RectTransform area)
+    {
+        return IsPositionInsideArea(worldPosition, area);
+    }
+
+    private bool IsPositionInsideArea(Vector2 pos, RectTransform area)
+    {
+        Vector3 localInBG = bgRect.InverseTransformPoint(area.position);
         Vector2 areaPos = new Vector2(localInBG.x, localInBG.y);
-        Vector2 areaHalfSize = darkDeepLockPopupArea.sizeDelta * 0.5f;
+        Vector2 areaHalfSize = area.sizeDelta * 0.5f;
 
-        bool inside = worldPosition.x >= areaPos.x - areaHalfSize.x &&
-                      worldPosition.x <= areaPos.x + areaHalfSize.x &&
-                      worldPosition.y >= areaPos.y - areaHalfSize.y &&
-                      worldPosition.y <= areaPos.y + areaHalfSize.y;
-
-        darkDeepLockObj.SetActive(inside);
+        return pos.x >= areaPos.x - areaHalfSize.x &&
+               pos.x <= areaPos.x + areaHalfSize.x &&
+               pos.y >= areaPos.y - areaHalfSize.y &&
+               pos.y <= areaPos.y + areaHalfSize.y;
     }
 
     #endregion

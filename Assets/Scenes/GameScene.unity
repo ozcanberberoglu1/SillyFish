@@ -998,6 +998,7 @@ RectTransform:
   - {fileID: 991260500}
   - {fileID: 1214702387}
   - {fileID: 40530520}
+  - {fileID: 1200401243}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -2282,6 +2283,81 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1182004431}
   m_CullTransparentMesh: 1
+--- !u!1 &1200401240
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1200401243}
+  - component: {fileID: 1200401242}
+  - component: {fileID: 1200401241}
+  m_Layer: 0
+  m_Name: DarkDeepOverlay
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1200401241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200401240}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 2100000, guid: 47d70f5f6282a4c558edb1e36aa0342b, type: 2}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 0
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &1200401242
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200401240}
+  m_CullTransparentMesh: 1
+--- !u!224 &1200401243
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1200401240}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 676939303}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1214702386
 GameObject:
   m_ObjectHideFlags: 0
@@ -3430,6 +3506,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2140358940}
   - component: {fileID: 2140358939}
+  - component: {fileID: 2140358941}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -3757,6 +3834,10 @@ MonoBehaviour:
   chainsObj: {fileID: 1563214740}
   darkDeepBGRect: {fileID: 386101554}
   darkFishArea: {fileID: 1916506767}
+  darkOverlay: {fileID: 2140358941}
+  depthDarknessIntensity: 1
+  darkStartOffset: 0.213
+  darkCurve: 5
   comboTextPrefab: {fileID: 7849027293160399152, guid: 4d5ffbe15533a4a9f978d7c80c72fc03, type: 3}
   comboTextSpawnPoint: {fileID: 40530520}
   comboTimeWindow: 3
@@ -3783,6 +3864,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2140358941
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2140358938}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6077b93c744de496f90e4eea55835b88, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  overlayImage: {fileID: 1200401241}
+  fadeSpeed: 2
 --- !u!4 &869757861341282284 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 869757861830485519, guid: 0328a312da17b4569a2e5bf06ae3347f, type: 3}
