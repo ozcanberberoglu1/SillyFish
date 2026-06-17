@@ -3546,6 +3546,7 @@ MonoBehaviour:
   foodScale: 1
   eatDistance: 80
   eatAnimDuration: 0.2
+  isArenaMode: 1
   baseScale: 0.8
   scalePerLevel: 0.05
   baseXPMultiplier: 10
@@ -3569,8 +3570,8 @@ MonoBehaviour:
     spawnCount: 25
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 3487c8e15b1104fde96983550e297683, type: 3}
-    level: 2
-    xp: 2
+    level: 1
+    xp: 1
     count: 6
     speed: 90
     detectionRadius: 400
@@ -3582,8 +3583,8 @@ MonoBehaviour:
     spawnCount: 5
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: e48109ca3c3da4856a141e6acf0b9545, type: 3}
-    level: 3
-    xp: 3
+    level: 1
+    xp: 1
     count: 4
     speed: 150
     detectionRadius: 500
@@ -3595,21 +3596,21 @@ MonoBehaviour:
     spawnCount: 9
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: bbb0ccadd036043e285805e64481e0cf, type: 3}
-    level: 4
-    xp: 3
+    level: 1
+    xp: 1
     count: 3
     speed: 100
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 1
     spawnCount: 12
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: f74d75d4de76a4886a0832dcef37c9cb, type: 3}
-    level: 5
-    xp: 3
+    level: 1
+    xp: 1
     count: 2
     speed: 120
     detectionRadius: 100
@@ -3621,34 +3622,34 @@ MonoBehaviour:
     spawnCount: 14
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 5ea429e4eac284a92879e45ff34796d2, type: 3}
-    level: 6
-    xp: 4
+    level: 1
+    xp: 1
     count: 2
     speed: 120
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 4
     spawnCount: 19
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 128e527c5b6db4e6f95821269ac1bcf4, type: 3}
-    level: 10
-    xp: 6
+    level: 1
+    xp: 1
     count: 2
     speed: 70
     detectionRadius: 200
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 5
     spawnCount: 14
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 346c86278ec7b4b2db1eac71919fb06c, type: 3}
-    level: 25
-    xp: 13
+    level: 1
+    xp: 1
     count: 2
     speed: 120
     detectionRadius: 700
@@ -3660,99 +3661,99 @@ MonoBehaviour:
     spawnCount: 5
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 1fb8dfa672dce41549b6a185edd3ecd7, type: 3}
-    level: 30
-    xp: 15
+    level: 1
+    xp: 1
     count: 2
     speed: 150
     detectionRadius: 700
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 12
     spawnCount: 5
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 06ea9e081b85b4fca962a946c1989d7e, type: 3}
-    level: 159
-    xp: 70
+    level: 1
+    xp: 1
     count: 2
     speed: 200
     detectionRadius: 700
     chaseTime: 2.5
     behavior: 0
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 3
     spawnCount: 1
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: a0fdcf7c05c464675b76a05f309a61d2, type: 3}
-    level: 220
-    xp: 100
+    level: 1
+    xp: 1
     count: 2
     speed: 350
     detectionRadius: 400
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 10
     spawnCount: 1
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 68260abe4d86c418d8fdad1b370de9f5, type: 3}
-    level: 99
-    xp: 50
+    level: 1
+    xp: 1
     count: 2
     speed: 80
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 3
     spawnCount: 5
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 2be79dc0f624849b483a91fb1708fba6, type: 3}
-    level: 8
-    xp: 7
+    level: 1
+    xp: 1
     count: 2
     speed: 80
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 0
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 7
     spawnCount: 8
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 2be79dc0f624849b483a91fb1708fba6, type: 3}
-    level: 8
-    xp: 7
+    level: 1
+    xp: 1
     count: 2
     speed: 200
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 0
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 7
     spawnCount: 8
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 6fa5b81911d934dcabb15dd8f333606a, type: 3}
-    level: 13
-    xp: 10
+    level: 1
+    xp: 1
     count: 2
     speed: 140
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 10
     spawnCount: 6
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: ce8dd05d98e0b4712900b12954bdec78, type: 3}
-    level: 17
-    xp: 14
+    level: 1
+    xp: 1
     count: 2
     speed: 170
     detectionRadius: 300
@@ -3764,41 +3765,41 @@ MonoBehaviour:
     spawnCount: 7
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: c7a99d8eaedfa4c878ae0035397bd0ec, type: 3}
-    level: 21
-    xp: 17
+    level: 1
+    xp: 1
     count: 2
     speed: 200
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 19
     spawnCount: 8
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: 28d42d539a33d4a3ca9b084244cf1bc1, type: 3}
-    level: 37
-    xp: 17
+    level: 1
+    xp: 1
     count: 2
     speed: 200
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 30
     spawnCount: 8
     isDarkFish: 0
   - prefab: {fileID: 6836182319577743249, guid: fc42300ba6ac24bbab2eb5c2f7de5c50, type: 3}
-    level: 40
-    xp: 19
+    level: 1
+    xp: 1
     count: 2
     speed: 230
     detectionRadius: 300
     chaseTime: 2.5
     behavior: 1
     swimArea: {fileID: 0}
-    canEatLowerLevel: 1
+    canEatLowerLevel: 0
     requiredPlayerLevel: 33
     spawnCount: 7
     isDarkFish: 1

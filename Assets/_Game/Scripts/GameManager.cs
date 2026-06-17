@@ -57,6 +57,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float eatAnimDuration = 0.8f;
 
     [Header("Player Level")]
+    [Tooltip("Arena modu (level sabit kalır, balık yedikçe arena puanı kazanılır)")]
+    [SerializeField] private bool isArenaMode;
     [Tooltip("Balığımızın başlangıç boyutu (scale)")]
     [SerializeField] private float baseScale = 0.5f;
     [Tooltip("Her level'de ne kadar büyüyeceği")]
@@ -282,7 +284,7 @@ public class GameManager : MonoBehaviour
                 canvasCamera = canvas.worldCamera;
         }
 
-        playerLevel = PlayerPrefs.GetInt("PlayerLevel", 1);
+        playerLevel = isArenaMode ? 1 : PlayerPrefs.GetInt("PlayerLevel", 1);
         entryLevel = PlayerPrefs.GetInt("EntryLevel", playerLevel);
 
         if (fishWorldTransform != null)
@@ -309,9 +311,12 @@ public class GameManager : MonoBehaviour
         MoveToSpawnPoint();
         SetupDarkDeep();
 
-        PlayerPrefs.DeleteKey("DeathLevel");
-        PlayerPrefs.SetInt("EntryLevel", playerLevel);
-        PlayerPrefs.Save();
+        if (!isArenaMode)
+        {
+            PlayerPrefs.DeleteKey("DeathLevel");
+            PlayerPrefs.SetInt("EntryLevel", playerLevel);
+            PlayerPrefs.Save();
+        }
     }
 
     private void FindPlayerLvText()
@@ -836,7 +841,15 @@ public class GameManager : MonoBehaviour
     {
         isEating = true;
 
-        currentXP += enemy.xp;
+        if (isArenaMode)
+        {
+            BattleArenaManager.AddArenaScore(1);
+        }
+        else
+        {
+            currentXP += enemy.xp;
+        }
+
         UpdatePlayerLevelText();
         TrackCombo();
 
@@ -852,6 +865,8 @@ public class GameManager : MonoBehaviour
 
         if (fishAnimator != null)
             fishAnimator.CrossFade("Locomotion", 0.15f);
+
+        if (isArenaMode) yield break;
 
         int requiredXP = baseXPMultiplier * playerLevel;
         if (currentXP >= requiredXP)
@@ -1119,6 +1134,12 @@ public class GameManager : MonoBehaviour
 
     private void FinalDeath()
     {
+        if (isArenaMode)
+        {
+            SceneManager.LoadScene("MainmenuScene");
+            return;
+        }
+
         int deathLevel = playerLevel;
         playerLevel = entryLevel;
         currentXP = 0;
@@ -1520,6 +1541,7 @@ public class GameManager : MonoBehaviour
 
     private void SavePlayerLevel()
     {
+        if (isArenaMode) return;
         PlayerPrefs.SetInt("PlayerLevel", playerLevel);
         float s = baseScale + (playerLevel - 1) * scalePerLevel;
         PlayerPrefs.SetFloat("PlayerScale", s);
