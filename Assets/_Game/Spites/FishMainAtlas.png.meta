@@ -18300,6 +18300,28 @@ TextureImporter:
       indices: 
       edges: []
       weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_38
+      rect:
+        serializedVersion: 2
+        x: 730
+        y: 1684
+        width: 187
+        height: 167
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fbf3bd16448be4e0982ae45e1277bf3c
+      internalID: 592513851
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
     outline: []
     customData: 
     physicsShape: []
@@ -18346,6 +18368,7 @@ TextureImporter:
       FishMainAtlas_35: 2123692769
       FishMainAtlas_36: -12988133
       FishMainAtlas_37: -926197061
+      FishMainAtlas_38: 592513851
       FishMainAtlas_4: -2643217370905581124
       FishMainAtlas_5: -2183807536646474854
       FishMainAtlas_6: -794198111
