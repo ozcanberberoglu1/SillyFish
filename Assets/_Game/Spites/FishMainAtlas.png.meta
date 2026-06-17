@@ -18221,7 +18221,7 @@ TextureImporter:
         width: 172
         height: 61
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -18243,7 +18243,7 @@ TextureImporter:
         width: 44
         height: 44
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
@@ -18265,8 +18265,8 @@ TextureImporter:
         width: 230
         height: 130
       alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 64, y: 0, z: 63, w: 0}
       customData: 
       outline: []
       physicsShape: []
@@ -18274,6 +18274,28 @@ TextureImporter:
       bones: []
       spriteID: 217f08d64355d4caea1e85e03dc82a60
       internalID: -12988133
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas_37
+      rect:
+        serializedVersion: 2
+        x: 1248
+        y: 1414
+        width: 351
+        height: 359
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a7cfeecee5c694d8786ffc29481f2e70
+      internalID: -926197061
       vertices: []
       indices: 
       edges: []
@@ -18323,6 +18345,7 @@ TextureImporter:
       FishMainAtlas_34: -555783432
       FishMainAtlas_35: 2123692769
       FishMainAtlas_36: -12988133
+      FishMainAtlas_37: -926197061
       FishMainAtlas_4: -2643217370905581124
       FishMainAtlas_5: -2183807536646474854
       FishMainAtlas_6: -794198111
