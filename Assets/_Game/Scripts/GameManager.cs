@@ -59,6 +59,8 @@ public class GameManager : MonoBehaviour
     [Header("Player Level")]
     [Tooltip("Arena modu (level sabit kalır, balık yedikçe arena puanı kazanılır)")]
     [SerializeField] private bool isArenaMode;
+    [Tooltip("Arena modunda anlık skor text'i")]
+    [SerializeField] private TextMeshProUGUI arenaCountText;
     [Tooltip("Balığımızın başlangıç boyutu (scale)")]
     [SerializeField] private float baseScale = 0.5f;
     [Tooltip("Her level'de ne kadar büyüyeceği")]
@@ -208,6 +210,8 @@ public class GameManager : MonoBehaviour
 
     private int playerLevel = 1;
     private int currentXP;
+    private int arenaScore;
+    private Coroutine arenaCountPunchCoroutine;
 
     // Combo
     private List<float> recentKillTimes = new List<float>();
@@ -286,6 +290,12 @@ public class GameManager : MonoBehaviour
 
         playerLevel = isArenaMode ? 1 : PlayerPrefs.GetInt("PlayerLevel", 1);
         entryLevel = PlayerPrefs.GetInt("EntryLevel", playerLevel);
+
+        if (isArenaMode)
+        {
+            arenaScore = PlayerPrefs.GetInt("BattleArena_MyScore", 0);
+            UpdateArenaCountText();
+        }
 
         if (fishWorldTransform != null)
         {
@@ -844,6 +854,9 @@ public class GameManager : MonoBehaviour
         if (isArenaMode)
         {
             BattleArenaManager.AddArenaScore(1);
+            arenaScore++;
+            UpdateArenaCountText();
+            PunchArenaCount();
         }
         else
         {
@@ -983,6 +996,47 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
         if (enemy != null && enemy.gameObject.activeSelf)
             enemy.ResumeAfterBite();
+    }
+
+    private void UpdateArenaCountText()
+    {
+        if (arenaCountText != null)
+            arenaCountText.text = arenaScore.ToString();
+    }
+
+    private void PunchArenaCount()
+    {
+        if (arenaCountText == null) return;
+        if (arenaCountPunchCoroutine != null)
+            StopCoroutine(arenaCountPunchCoroutine);
+        arenaCountPunchCoroutine = StartCoroutine(PunchScale(arenaCountText.rectTransform, 1.4f, 0.2f));
+    }
+
+    private IEnumerator PunchScale(RectTransform rt, float punchSize, float duration)
+    {
+        Vector3 originalScale = Vector3.one;
+        float half = duration * 0.5f;
+        float t = 0f;
+
+        while (t < half)
+        {
+            t += Time.deltaTime;
+            float s = Mathf.Lerp(1f, punchSize, t / half);
+            rt.localScale = originalScale * s;
+            yield return null;
+        }
+
+        t = 0f;
+        while (t < half)
+        {
+            t += Time.deltaTime;
+            float s = Mathf.Lerp(punchSize, 1f, t / half);
+            rt.localScale = originalScale * s;
+            yield return null;
+        }
+
+        rt.localScale = originalScale;
+        arenaCountPunchCoroutine = null;
     }
 
     #region Health & Damage

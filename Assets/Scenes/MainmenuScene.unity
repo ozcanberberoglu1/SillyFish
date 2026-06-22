@@ -3086,7 +3086,7 @@ MonoBehaviour:
   fakePlayerCount: 20
   mePlayerText: {fileID: 1285257123}
   meCountText: {fileID: 1099915647}
-  requiredLevel: 1
+  requiredLevel: 20
   playerName: Silly Fish
 --- !u!4 &786298377
 Transform:
