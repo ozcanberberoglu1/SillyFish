@@ -1,0 +1,981 @@
+fileFormatVersion: 2
+guid: 7adf9a9b535cf46f58464eb69b8c7d48
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -2016350964271069665
+    second: FishMainAtlas2_0
+  - first:
+      213: -9105898877971418902
+    second: FishMainAtlas2_1
+  - first:
+      213: 8457045300020506856
+    second: FishMainAtlas2_2
+  - first:
+      213: -3069228972309808603
+    second: FishMainAtlas2_3
+  - first:
+      213: 3043119467819649239
+    second: FishMainAtlas2_4
+  - first:
+      213: -1089904562315426825
+    second: FishMainAtlas2_5
+  - first:
+      213: 1310018129748674178
+    second: FishMainAtlas2_6
+  - first:
+      213: 7370662556892994139
+    second: FishMainAtlas2_7
+  - first:
+      213: -133115096707674310
+    second: FishMainAtlas2_8
+  - first:
+      213: 4484554202930641117
+    second: FishMainAtlas2_9
+  - first:
+      213: 8034348865570723212
+    second: FishMainAtlas2_10
+  - first:
+      213: -4419784428792111377
+    second: FishMainAtlas2_11
+  - first:
+      213: 5513168010677346459
+    second: FishMainAtlas2_12
+  - first:
+      213: -4732546064892573607
+    second: FishMainAtlas2_13
+  - first:
+      213: -530695422290822374
+    second: FishMainAtlas2_14
+  - first:
+      213: 3065781889682115062
+    second: FishMainAtlas2_15
+  - first:
+      213: -7522994493850455945
+    second: FishMainAtlas2_16
+  - first:
+      213: 5981958209751841313
+    second: FishMainAtlas2_17
+  - first:
+      213: 2623048347339813140
+    second: FishMainAtlas2_18
+  - first:
+      213: -7562187932013699450
+    second: FishMainAtlas2_19
+  - first:
+      213: -1890804249092480057
+    second: FishMainAtlas2_20
+  - first:
+      213: -8512047584945190876
+    second: FishMainAtlas2_21
+  - first:
+      213: 5665344446806428184
+    second: FishMainAtlas2_22
+  - first:
+      213: 7459493259132411029
+    second: FishMainAtlas2_23
+  - first:
+      213: -4262418826424450069
+    second: FishMainAtlas2_24
+  - first:
+      213: -8657133678289407264
+    second: FishMainAtlas2_25
+  - first:
+      213: -2700482212503980411
+    second: FishMainAtlas2_26
+  - first:
+      213: 649350440402782587
+    second: FishMainAtlas2_27
+  - first:
+      213: -8389011043747231563
+    second: FishMainAtlas2_28
+  - first:
+      213: -2766303726793750224
+    second: FishMainAtlas2_29
+  - first:
+      213: -6208893977646163688
+    second: FishMainAtlas2_30
+  - first:
+      213: 5467439818577187660
+    second: FishMainAtlas2_31
+  - first:
+      213: 8081689902828157270
+    second: FishMainAtlas2_32
+  - first:
+      213: -4291970930007125369
+    second: FishMainAtlas2_33
+  - first:
+      213: 51047005533183203
+    second: FishMainAtlas2_34
+  - first:
+      213: -7972051797959000626
+    second: FishMainAtlas2_35
+  - first:
+      213: -5091261409675528379
+    second: FishMainAtlas2_36
+  - first:
+      213: -7051821481626173441
+    second: FishMainAtlas2_37
+  - first:
+      213: 2089167324899720696
+    second: FishMainAtlas2_38
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: iOS
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: FishMainAtlas2_0
+      rect:
+        serializedVersion: 2
+        x: 10
+        y: 328
+        width: 372
+        height: 260
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: f164b182b7b7404e0800000000000000
+      internalID: -2016350964271069665
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_1
+      rect:
+        serializedVersion: 2
+        x: 393
+        y: 323
+        width: 262
+        height: 291
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ae0b2e1373951a180800000000000000
+      internalID: -9105898877971418902
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_11
+      rect:
+        serializedVersion: 2
+        x: 79
+        y: 240
+        width: 27
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: fee1b02aa75c9a2c0800000000000000
+      internalID: -4419784428792111377
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_13
+      rect:
+        serializedVersion: 2
+        x: 668
+        y: 322
+        width: 247
+        height: 284
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 958c7e69d6e925eb0800000000000000
+      internalID: -4732546064892573607
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_14
+      rect:
+        serializedVersion: 2
+        x: 1395
+        y: 293
+        width: 612
+        height: 357
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: a1bfd6e335792a8f0800000000000000
+      internalID: -530695422290822374
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_16
+      rect:
+        serializedVersion: 2
+        x: 938
+        y: 274
+        width: 108
+        height: 92
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 770f2dacd54f89790800000000000000
+      internalID: -7522994493850455945
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_17
+      rect:
+        serializedVersion: 2
+        x: 1049
+        y: 272
+        width: 148
+        height: 97
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 31, y: 0, z: 32, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 12a7d794c4f240350800000000000000
+      internalID: 5981958209751841313
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_18
+      rect:
+        serializedVersion: 2
+        x: 50
+        y: 240
+        width: 27
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 4117ddb0390f66420800000000000000
+      internalID: 2623048347339813140
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_19
+      rect:
+        serializedVersion: 2
+        x: 108
+        y: 240
+        width: 27
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 68ed39b5426bd0790800000000000000
+      internalID: -7562187932013699450
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_20
+      rect:
+        serializedVersion: 2
+        x: 137
+        y: 240
+        width: 26
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7c32b09ad8382c5e0800000000000000
+      internalID: -1890804249092480057
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_21
+      rect:
+        serializedVersion: 2
+        x: 166
+        y: 240
+        width: 26
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 428ce1cf1d12fd980800000000000000
+      internalID: -8512047584945190876
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_22
+      rect:
+        serializedVersion: 2
+        x: 227
+        y: 236
+        width: 384
+        height: 51
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 26, y: 0, z: 26, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 81a012212c85f9e40800000000000000
+      internalID: 5665344446806428184
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_24
+      rect:
+        serializedVersion: 2
+        x: 637
+        y: 15
+        width: 281
+        height: 286
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: be3880f19a8d8d4c0800000000000000
+      internalID: -4262418826424450069
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_26
+      rect:
+        serializedVersion: 2
+        x: 1209
+        y: 96
+        width: 206
+        height: 206
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 58670794cb5f58ad0800000000000000
+      internalID: -2700482212503980411
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_27
+      rect:
+        serializedVersion: 2
+        x: 1423
+        y: 0
+        width: 615
+        height: 285
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: b7983fef8c4f20900800000000000000
+      internalID: 649350440402782587
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_28
+      rect:
+        serializedVersion: 2
+        x: 13
+        y: 22
+        width: 212
+        height: 209
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b80e9017ee349b80800000000000000
+      internalID: -8389011043747231563
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_29
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 191
+        width: 374
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 21, y: 0, z: 21, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 0398e9fba6d1c99d0800000000000000
+      internalID: -2766303726793750224
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_30
+      rect:
+        serializedVersion: 2
+        x: 930
+        y: 19
+        width: 271
+        height: 238
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 81, y: 0, z: 77, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 819965ec2d395d9a0800000000000000
+      internalID: -6208893977646163688
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_31
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 149
+        width: 374
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 21, y: 0, z: 21, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c439e191c8f30eb40800000000000000
+      internalID: 5467439818577187660
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_32
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 107
+        width: 374
+        height: 41
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 21, y: 0, z: 21, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 659fee2e52ee72070800000000000000
+      internalID: 8081689902828157270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_33
+      rect:
+        serializedVersion: 2
+        x: 236
+        y: 27
+        width: 73
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7825f92dd2bdf64c0800000000000000
+      internalID: -4291970930007125369
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_34
+      rect:
+        serializedVersion: 2
+        x: 311
+        y: 27
+        width: 72
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 3ec17a72bfa55b000800000000000000
+      internalID: 51047005533183203
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_35
+      rect:
+        serializedVersion: 2
+        x: 386
+        y: 27
+        width: 72
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ecdb3a3a0259d5190800000000000000
+      internalID: -7972051797959000626
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_36
+      rect:
+        serializedVersion: 2
+        x: 461
+        y: 27
+        width: 72
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 547b2a9f8b43859b0800000000000000
+      internalID: -5091261409675528379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_37
+      rect:
+        serializedVersion: 2
+        x: 536
+        y: 27
+        width: 72
+        height: 73
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffff33089b5e22e90800000000000000
+      internalID: -7051821481626173441
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_38
+      rect:
+        serializedVersion: 2
+        x: 1243
+        y: 22
+        width: 139
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 31, y: 0, z: 33, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 8fd3005fc963efc10800000000000000
+      internalID: 2089167324899720696
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_2
+      rect:
+        serializedVersion: 2
+        x: 1
+        y: 910
+        width: 121
+        height: 112
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0ab6a082e70d0447cab66e9f3418df22
+      internalID: 8457045300020506856
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_3
+      rect:
+        serializedVersion: 2
+        x: 126
+        y: 890
+        width: 207
+        height: 134
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 21f195c1bc512433cbeb81e53e13382b
+      internalID: -3069228972309808603
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_4
+      rect:
+        serializedVersion: 2
+        x: 339
+        y: 904
+        width: 147
+        height: 120
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e25847b4c3a6349fabc21e0bd3dd0fe0
+      internalID: 3043119467819649239
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_5
+      rect:
+        serializedVersion: 2
+        x: 493
+        y: 885
+        width: 120
+        height: 139
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c167df622db8c46518ad472a0395501c
+      internalID: -1089904562315426825
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: FishMainAtlas2_6
+      rect:
+        serializedVersion: 2
+        x: 617
+        y: 879
+        width: 128
+        height: 145
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e7f6f6403bee44e38aa6b1eb36b72444
+      internalID: 1310018129748674178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 44ed283c79501486ab1c3d5a88b6373f
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      FishMainAtlas2_0: -2016350964271069665
+      FishMainAtlas2_1: -9105898877971418902
+      FishMainAtlas2_10: 8034348865570723212
+      FishMainAtlas2_11: -4419784428792111377
+      FishMainAtlas2_12: 5513168010677346459
+      FishMainAtlas2_13: -4732546064892573607
+      FishMainAtlas2_14: -530695422290822374
+      FishMainAtlas2_15: 3065781889682115062
+      FishMainAtlas2_16: -7522994493850455945
+      FishMainAtlas2_17: 5981958209751841313
+      FishMainAtlas2_18: 2623048347339813140
+      FishMainAtlas2_19: -7562187932013699450
+      FishMainAtlas2_2: 8457045300020506856
+      FishMainAtlas2_20: -1890804249092480057
+      FishMainAtlas2_21: -8512047584945190876
+      FishMainAtlas2_22: 5665344446806428184
+      FishMainAtlas2_23: 7459493259132411029
+      FishMainAtlas2_24: -4262418826424450069
+      FishMainAtlas2_25: -8657133678289407264
+      FishMainAtlas2_26: -2700482212503980411
+      FishMainAtlas2_27: 649350440402782587
+      FishMainAtlas2_28: -8389011043747231563
+      FishMainAtlas2_29: -2766303726793750224
+      FishMainAtlas2_3: -3069228972309808603
+      FishMainAtlas2_30: -6208893977646163688
+      FishMainAtlas2_31: 5467439818577187660
+      FishMainAtlas2_32: 8081689902828157270
+      FishMainAtlas2_33: -4291970930007125369
+      FishMainAtlas2_34: 51047005533183203
+      FishMainAtlas2_35: -7972051797959000626
+      FishMainAtlas2_36: -5091261409675528379
+      FishMainAtlas2_37: -7051821481626173441
+      FishMainAtlas2_38: 2089167324899720696
+      FishMainAtlas2_4: 3043119467819649239
+      FishMainAtlas2_5: -1089904562315426825
+      FishMainAtlas2_6: 1310018129748674178
+      FishMainAtlas2_7: 7370662556892994139
+      FishMainAtlas2_8: -133115096707674310
+      FishMainAtlas2_9: 4484554202930641117
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
